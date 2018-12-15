@@ -1,8 +1,23 @@
 main {
-  margin: 30px auto;
-  width: 600px;
+  margin: 20px auto;
+  max-width: 600px;
+  padding-right: 30px;
+  padding-left: 30px;
 }
 
 main input {
   width: 100%;
+}
+
+main table {
+  margin: 20px auto;
+}
+
+main table .col-value {
+  text-align: left;
+  width: 100%;
+}
+
+main table .col-score {
+  text-align: right;
 }

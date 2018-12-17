@@ -1,4 +1,4 @@
-const api = 'http://stefangeneralao.com:3001';
+const api = 'http://localhost:3001';
 
 export {
   api,

@@ -1,11 +1,12 @@
 import React from 'react';
-import './Header.css';
+import './Header.scss';
 
 class Header extends React.Component {
   render() {
     return (
       <header>
-        <h1>Troll hunterz</h1>
+        <h1>Troll Hunterz</h1>
+        { this.props.children }
       </header>
     );
   }

@@ -1,0 +1,23 @@
+table {
+  width: 100%;
+
+  .col-value {
+    text-align: left;
+  }
+
+  .col-score, .col-comparative {
+    text-align: right;
+  }
+  
+  .col-score {
+    min-width: 55px;
+  }
+
+  .col-comparative {
+    min-width: 115px;
+  }
+
+  td {
+    padding: 10px 0;
+  }
+}

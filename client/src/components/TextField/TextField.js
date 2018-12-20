@@ -9,6 +9,8 @@ class TextField extends React.Component {
         <form onSubmit={ onSubmit }>
           <input
             type="text"
+            name="textfield"
+            id="textfield"
             onChange={ onChange }
             value={ value }
           />

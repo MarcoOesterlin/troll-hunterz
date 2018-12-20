@@ -1,6 +1,6 @@
 import React from 'react';
-import numeral from 'numeral';
 import './DataTable.scss';
+import DataRow from './DataRow/DataRow';
 
 class DataTable extends React.Component {
   render() {
@@ -11,16 +11,17 @@ class DataTable extends React.Component {
           <tr>
             <th className="col-value">Value</th>
             <th className="col-score">Score</th>
-            <th className="col-comparative">Comparative</th>
+            {/* <th className="col-comparative">Comparative</th> */}
           </tr>
         </thead>
         <tbody>
           { entries.map(({ value, score, comparative }) => (
-            <tr key={ `entry:${ value }` }>
-              <td className="col-value">{ value }</td>
-              <td className="col-score">{ numeral(score).format('0.0') }</td>
-              <td className="col-comparative">{ numeral(comparative).format('0.0') }</td>
-            </tr>
+            <DataRow
+              key={ `datarow:${ value }` }
+              value={ value }
+              score={ score }
+              comparative={ comparative }
+            />
           ))}
         </tbody>
       </table>

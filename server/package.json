@@ -8,9 +8,13 @@
     "babel-register": "^6.26.0",
     "cors": "^2.8.5",
     "express": "^4.16.4",
-    "sentiment": "^5.0.1"
+    "mongodb": "^3.1.10",
+    "sentiment": "^5.0.1",
+    "sqlite3": "^4.0.4"
   },
   "scripts": {
-    "start": "nodemon"
+    "start": "yarn; nodemon",
+    "now-start": "node .",
+    "deploy": "now; now alias; now scale troll-hunterz.now.sh 1 1"
   }
 }

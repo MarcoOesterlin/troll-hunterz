@@ -5,7 +5,9 @@ class Header extends React.Component {
   render() {
     return (
       <header>
-        <h1>Troll Hunterz</h1>
+        <label htmlFor="textfield">
+          <h1>Troll Hunterz</h1>
+        </label>
         { this.props.children }
       </header>
     );

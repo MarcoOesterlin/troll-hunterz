@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "npm --cwd server start & npm --cwd client start",
-    "deploy": "npm --cwd server deploy & npm --cwd client deploy",
-    "install": "npm --cwd server install & npm --cwd client install"
+    "start": "npm --prefix server start & npm --prefix client start",
+    "deploy": "npm --prefix server deploy & npm --prefix client deploy",
+    "install": "npm --prefix server install & npm --prefix client install"
   }
 }

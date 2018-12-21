@@ -13,7 +13,7 @@
     "sqlite3": "^4.0.4"
   },
   "scripts": {
-    "start": "yarn; nodemon",
+    "start": "npm install; nodemon",
     "now-start": "node .",
     "deploy": "now; now alias; now scale troll-hunterz.now.sh 1 1"
   }

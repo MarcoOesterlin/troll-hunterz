@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "yarn --cwd server start & yarn --cwd client start",
-    "deploy": "yarn --cwd server deploy & yarn --cwd client deploy",
-    "install": "yarn --cwd server install & yarn --cwd client install"
+    "start": "npm --cwd server start & npm --cwd client start",
+    "deploy": "npm --cwd server deploy & npm --cwd client deploy",
+    "install": "npm --cwd server install & npm --cwd client install"
   }
 }

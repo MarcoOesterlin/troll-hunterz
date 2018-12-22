@@ -13,8 +13,10 @@
     "sqlite3": "^4.0.4"
   },
   "scripts": {
-    "start": "nodemon",
+    "start": "npm install && nodemon",
     "now-start": "node .",
-    "deploy": "now & now alias & now scale troll-hunterz.now.sh 1 1"
+    "deploy": "now && npm run alias && npm run scale && echo Server deploy success!",
+    "scale": "now scale troll-hunterz.now.sh 1 1",
+    "alias": "now alias"
   }
 }

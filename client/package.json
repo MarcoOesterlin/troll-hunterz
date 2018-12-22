@@ -12,9 +12,9 @@
     "react-scripts": "2.1.1"
   },
   "scripts": {
-    "start": "npm install && react-scripts start",
+    "start": "yarn && react-scripts start",
     "build": "react-scripts build",
-    "deploy": "npm install && npm run build && netlify deploy --dir ./build --prod"
+    "deploy": "yarn && yarn build && netlify deploy --dir ./build --prod"
   },
   "eslintConfig": {
     "extends": "react-app"

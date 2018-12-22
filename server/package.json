@@ -13,9 +13,9 @@
     "sqlite3": "^4.0.4"
   },
   "scripts": {
-    "start": "npm install && nodemon",
+    "start": "yarn && nodemon",
     "now-start": "node .",
-    "deploy": "now && npm run alias && npm run scale && echo Server deploy success!",
+    "deploy": "now && yarn alias && yarn scale && echo Server deploy success!",
     "scale": "now scale troll-hunterz.now.sh 1 1",
     "alias": "now alias"
   }

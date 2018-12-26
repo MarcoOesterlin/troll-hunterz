@@ -10,16 +10,45 @@ import DataTable from '../DataTable/DataTable';
 class App extends React.Component {
   constructor() {
     super();
+    this.handleScroll = this.handleScroll.bind(this);
     this.state = {
       entries: [],
       textFieldValue: '',
+      showHeader: true,
     };
   }
+
+
+    
+    
+ 
+
+
+ 
+
+ 
+
+
   
   componentDidMount() {
     this.fetchEntries();
+    window.addEventListener('scroll', this.handleScroll);
   }
   
+  componentWillUnmount(){
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+
+  handleScroll(e) {
+    if(window.scrollY > 10) {
+      console.log("Scrolled")
+      this.setState({showHeader: false});
+    } else {
+      this.setState({showHeader: true});
+    }
+  }
+
+
   fetchEntries = () => {
     axios.get(`${ api }/entries`)
       .then((res) => {
@@ -68,14 +97,18 @@ class App extends React.Component {
     const { entries, textFieldValue } = this.state;
     return (
       <div className="App">
+      {
+        this.state.showHeader?
         <Header>
           <TextField
             onSubmit={ onSubmitHandler }
             onChange={ onChangeHandler }
             value={ textFieldValue }
           />
+      
         </Header>
-
+        :null
+      } 
         <Main>
           <DataTable entries={ entries } />
         </Main>

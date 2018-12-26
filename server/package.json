@@ -9,10 +9,11 @@
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "mongodb": "^3.1.10",
+    "nodemon": "^1.18.9",
     "sentiment": "^5.0.1"
   },
   "scripts": {
-    "start": "yarn && nodemon",
+    "start": "yarn && ./node_modules/.bin/nodemon",
     "now-start": "node .",
     "deploy": "now && yarn alias && yarn scale && echo Deploy complete.",
     "scale": "now scale troll-hunterz.now.sh 1 1",

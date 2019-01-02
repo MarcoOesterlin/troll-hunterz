@@ -6,6 +6,7 @@ import axios from 'axios';
 import { api } from '../../config';
 import TextField from '../TextField/TextField';
 import DataTable from '../DataTable/DataTable';
+import Footer from '../Footer/Footer'
 
 class App extends React.Component {
   constructor() {
@@ -112,6 +113,7 @@ class App extends React.Component {
         <Main>
           <DataTable entries={ entries } />
         </Main>
+        <Footer/>
       </div>
     );
   }

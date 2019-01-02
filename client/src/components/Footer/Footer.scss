@@ -1,48 +1,43 @@
 footer {
-    display: grid;
-    grid-template-areas: "Git React Node Sass MongoDB";
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    width: 100%;
-    max-height: 100px;
-    
-    .GithubLogo {
-        grid-area: Git;
-    }
-    
-    .ReactLogo {
-        grid-area: React;
-    }
-    
-    .NodeLogo {
-        grid-area: Node;
-    }
-    
-    .SassLogo {
-        grid-area: Sass;
-    }
-    
-    .MongoDBLogo {
-        grid-area: MongoDB;
-    }
-    
-    img {
-        width: 100%;
-    }
-}
+  display: grid;
+  grid-template-areas: "Git React Node Sass MongoDB";
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  width: 100%;
+  max-height: 100px;
+  
+  .GithubLogo {
+    grid-area: Git;
+  }
+  
+  .ReactLogo {
+    grid-area: React;
+  }
+  
+  .NodeLogo {
+    grid-area: Node;
+  }
+  
+  .SassLogo {
+    grid-area: Sass;
+  }
+  
+  .MongoDBLogo {
+    grid-area: MongoDB;
+  }
 
-img:hover {  
+  img:hover {  
     opacity: 1;
     
     /*Reflection*/
-   -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.7, transparent), to(rgba(0,0,0,0.4)));
-  
+    -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.7, transparent), to(rgba(0,0,0,0.4)));
+    
     /*Glow*/
-   -webkit-box-shadow: 0px 0px 30px rgba(255,255,255,0.8);
-   -moz-box-shadow: 0px 0px 30px rgba(255,255,255,0.8);
-   box-shadow: 0px 0px 30px rgba(255,255,255,0.8);
- }
-
- img {
+    -webkit-box-shadow: 0px 0px 30px rgba(255,255,255,0.8);
+    -moz-box-shadow: 0px 0px 30px rgba(255,255,255,0.8);
+    box-shadow: 0px 0px 30px rgba(255,255,255,0.8);
+  }
+  
+  img {
     margin: 25px;
     opacity: 0.8;
     
@@ -53,4 +48,5 @@ img:hover {
     
     /*Reflection*/
     -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.7, transparent), to(rgba(0,0,0,0.1)));
-   }
+  }
+}

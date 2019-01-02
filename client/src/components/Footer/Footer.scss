@@ -4,30 +4,28 @@ footer {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     width: 100%;
     height: 200px;
-}
-
-.GithubLogo {
-    display: grid;
-    grid-area: "Git";
-
-}
-
-.ReactLogo {
-    display: grid;
-    grid-area: "React"
-}
-
-.NodeLogo {
-    display: grid;
-    grid-area: "Node";
-}
-
-.SassLogo {
-    display: grid;
-    grid-area: "Sass";
-}
-
-.MongoDBLogo {
-    display: grid;
-    grid-area: "MongoDB";
+    
+    .GithubLogo {
+        grid-area: Git;
+    }
+    
+    .ReactLogo {
+        grid-area: React;
+    }
+    
+    .NodeLogo {
+        grid-area: Node;
+    }
+    
+    .SassLogo {
+        grid-area: Sass;
+    }
+    
+    .MongoDBLogo {
+        grid-area: MongoDB;
+    }
+    
+    img {
+        width: 100%;
+    }
 }

@@ -15,22 +15,10 @@ class App extends React.Component {
     this.state = {
       entries: [],
       textFieldValue: '',
-      showHeader: true,
+      headerSize: 'large',
     };
   }
 
-
-    
-    
- 
-
-
- 
-
- 
-
-
-  
   componentDidMount() {
     this.fetchEntries();
     window.addEventListener('scroll', this.handleScroll);
@@ -41,11 +29,14 @@ class App extends React.Component {
   }
 
   handleScroll(e) {
-    if(window.scrollY > 10) {
-      console.log("Scrolled")
-      this.setState({showHeader: false});
+    if(window.scrollY > 300) {
+      if (this.state.headerSize != 'small') {
+        this.setState({headerSize: 'small'});
+      }
     } else {
-      this.setState({showHeader: true});
+      if (this.state.headerSize != 'large') {
+        this.setState({headerSize: 'large'});
+      }
     }
   }
 
@@ -98,18 +89,14 @@ class App extends React.Component {
     const { entries, textFieldValue } = this.state;
     return (
       <div className="App">
-      {
-        this.state.showHeader?
-        <Header>
+        <Header display={ this.state.headerSize }>
           <TextField
             onSubmit={ onSubmitHandler }
             onChange={ onChangeHandler }
             value={ textFieldValue }
           />
       
-        </Header>
-        :null
-      } 
+        </Header> 
         <Main>
           <DataTable entries={ entries } />
         </Main>

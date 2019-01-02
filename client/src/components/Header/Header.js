@@ -7,7 +7,7 @@ class Header extends React.Component {
 
   render() {
     return (
-        <header>
+        <header className={`${ this.props.display }`}>
           <label htmlFor="textfield">
             <h1>
               <img src={TrollLogo} alt="Troll Hunterz Logo"/>

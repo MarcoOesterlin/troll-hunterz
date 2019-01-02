@@ -29,7 +29,7 @@ class App extends React.Component {
   }
 
   handleScroll(e) {
-    if(window.scrollY > 300) {
+    if(window.scrollY > 150) {
       if (this.state.headerSize !== 'small') {
         this.setState({headerSize: 'small'});
       }

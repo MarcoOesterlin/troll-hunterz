@@ -3,7 +3,8 @@ footer {
   grid-template-areas: "Git React Node Sass MongoDB";
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   width: 100%;
-  max-height: 100px;
+  padding-top: 30px;
+  background-color: #718792;
   
   .GithubLogo {
     grid-area: Git;
@@ -37,7 +38,7 @@ footer {
   }
   
   img {
-    width: 100%;
+    width: 70%;
     opacity: 0.8;
     
     /*Transition*/

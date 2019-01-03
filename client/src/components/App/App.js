@@ -6,20 +6,41 @@ import axios from 'axios';
 import { api } from '../../config';
 import TextField from '../TextField/TextField';
 import DataTable from '../DataTable/DataTable';
+import Footer from '../Footer/Footer'
 
 class App extends React.Component {
   constructor() {
     super();
+    this.handleScroll = this.handleScroll.bind(this);
     this.state = {
       entries: [],
       textFieldValue: '',
+      headerSize: 'large',
     };
   }
-  
+
   componentDidMount() {
     this.fetchEntries();
+    window.addEventListener('scroll', this.handleScroll);
   }
   
+  componentWillUnmount(){
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+
+  handleScroll(e) {
+    if(window.scrollY > 150) {
+      if (this.state.headerSize !== 'small') {
+        this.setState({headerSize: 'small'});
+      }
+    } else {
+      if (this.state.headerSize !== 'large') {
+        this.setState({headerSize: 'large'});
+      }
+    }
+  }
+
+
   fetchEntries = () => {
     axios.get(`${ api }/entries`)
       .then((res) => {
@@ -68,17 +89,18 @@ class App extends React.Component {
     const { entries, textFieldValue } = this.state;
     return (
       <div className="App">
-        <Header>
+        <Header display={ this.state.headerSize }>
           <TextField
             onSubmit={ onSubmitHandler }
             onChange={ onChangeHandler }
             value={ textFieldValue }
           />
-        </Header>
-
+      
+        </Header> 
         <Main>
           <DataTable entries={ entries } />
         </Main>
+        <Footer/>
       </div>
     );
   }

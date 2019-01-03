@@ -1,0 +1,53 @@
+footer {
+  display: grid;
+  grid-template-areas: "Git React Node Sass MongoDB";
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  width: 100%;
+  padding-top: 30px;
+  background-color: #5f605d;
+  
+  .GithubLogo {
+    grid-area: Git;
+  }
+  
+  .ReactLogo {
+    grid-area: React;
+  }
+  
+  .NodeLogo {
+    grid-area: Node;
+  }
+  
+  .SassLogo {
+    grid-area: Sass;
+  }
+  
+  .MongoDBLogo {
+    grid-area: MongoDB;
+  }
+
+  img:hover {  
+    opacity: 1;
+    
+    /*Reflection*/
+    -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.7, transparent), to(rgba(0,0,0,0.4)));
+    
+    -webkit-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    transform: scale(1.1);
+  }
+  
+  img {
+    width: 70%;
+    opacity: 0.8;
+    
+    /*Transition*/
+    transition: all 1s ease;
+    -webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    
+    /*Reflection*/
+    -webkit-box-reflect: below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(.7, transparent), to(rgba(0,0,0,0.1)));
+  }
+}

@@ -69,9 +69,65 @@ header {
     }
   }
 
-
   @media screen and (max-width: 768px) {
-    grid-template-columns: 150px 1fr 0;
+    &.large {
+      height: 250px;
+      
+      h1 {
+        position: relative;
+        color: black;
+        font-size: 1.3rem;
+        margin: 0;
+  
+        img {
+          transition: $transition-speed;
+          position: absolute;
+          top: 25px;
+          left: 0;
+          right: 0;
+          margin: auto;
+          max-width: 400px;
+        }
+      }
+  
+      .text-field {
+        transition: $transition-speed;
+        position: absolute;
+        top: 200px;
+        left: 20px;
+        right: 20px;
+      }
+    }
+    
+    &.small {
+      height: 60px;
+      
+      h1 {
+        position: relative;
+        color: black;
+        font-size: 1.3rem;
+        margin: 0;
+  
+        img {
+          transition: $transition-speed;
+          position: absolute;
+          top: 5px;
+          left: calc(-100% + 170px);
+          width: 140px;
+          right: 0;
+          margin: auto;
+        }
+      }
+  
+      .text-field {
+        transition: $transition-speed;
+        position: absolute;
+        top: 17px;
+        left: 180px;
+        right: 30px;
+        margin: 0;
+      }
+    }
   }
 }
 

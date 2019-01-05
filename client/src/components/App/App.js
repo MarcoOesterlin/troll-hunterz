@@ -7,6 +7,7 @@ import { api } from '../../config';
 import TextField from '../TextField/TextField';
 import DataTable from '../DataTable/DataTable';
 import Footer from '../Footer/Footer'
+import Card from '../Card/Card'
 
 class App extends React.Component {
   constructor() {
@@ -98,7 +99,9 @@ class App extends React.Component {
       
         </Header> 
         <Main>
-          <DataTable entries={ entries } />
+          <Card title="Top 5 Most Toxic"/>
+          <Card title="Top 5 Most Nice"/>
+          <Card title="Latest Entries"/>
         </Main>
         <Footer/>
       </div>

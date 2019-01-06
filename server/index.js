@@ -1,5 +1,16 @@
-require('babel-register')({
-  presets: [ 'es2015' ]
+require('@babel/register')({
+  presets: [
+    [
+      "@babel/preset-env",
+      {
+        targets: {
+          node: "current"
+        }
+      }
+    ]
+  ],
+  "plugins": [
+    "@babel/plugin-proposal-class-properties"
+  ]
 });
-
-module.exports = require('./server.js');
+require('./server.js');

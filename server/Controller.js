@@ -1,6 +1,7 @@
 import { uri } from './mongodbConfig.js';
 import { MongoClient } from 'mongodb';
 import axios from 'axios';
+import { sentimentURI } from './config';
 
 export default class Controller {
   constructor() {
@@ -57,8 +58,7 @@ export default class Controller {
     }
   
     try {
-      const { SENTIMENT_URI } = process.env;
-      const analyzeResponse = await axios.get(`${ SENTIMENT_URI }/analyze?value=${ value }`);
+      const analyzeResponse = await axios.get(`${ sentimentURI }/analyze?value=${ value }`);
       const { comparative, score } = analyzeResponse.data;
       try {
         collection.insertOne({

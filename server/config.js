@@ -1,0 +1,1 @@
+export const sentimentURI = process.env.SENTIMENT_URI || 'http://localhost:3002';

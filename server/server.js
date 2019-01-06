@@ -17,5 +17,5 @@ app.get('/entries', getAllEntries);
 app.get('/entry', getEntry);
 app.post('/entry', insertEntry);
 app.listen(port, () => {
-  console.log(`Listening to port ${ port }.`);
+  console.log(`Server listening to port ${ port }.`);
 });

@@ -1,6 +1,7 @@
 import { uri } from './mongodbConfig.js';
 import { MongoClient } from 'mongodb';
 import Sentiment from 'sentiment';
+import axios from 'axios';
 
 const sentiment = new Sentiment();
 
@@ -49,7 +50,7 @@ export default class Controller {
     });
   }
 
-  insertEntry = (req, res) => {
+  insertEntry = async (req, res) => {
     const { client } = this;
     const collection = client.db('trollhunterz').collection('entries');
     const { value } = req.body;
@@ -59,7 +60,8 @@ export default class Controller {
     }
   
     try {
-      const { comparative, score } = sentiment.analyze(value);
+      const analyzeResponse = await axios.get(`http://localhost:3002/analyze?value=${ value }`);
+      const { comparative, score } = analyzeResponse.data;
       try {
         collection.insertOne({
           _id: {
@@ -74,8 +76,8 @@ export default class Controller {
         res.status(500).send('Database failure.');
         return;
       }
-    } catch (e) {
-      res.status(500).send('Analyze failure');
+    } catch (err) {
+      res.status(500).send('Failed to analyze.');
       return;
     }
   }

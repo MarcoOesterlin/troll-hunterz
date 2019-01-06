@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "yarn && concurrently --names \"SERVER,CLIENT\" -c \"bgGreen.bold,bgMagenta.bold\" \"yarn --cwd server start\" \"yarn --cwd client start\"",
-    "deploy": "yarn && concurrently --names \"SERVER,CLIENT\" -c \"bgGreen.bold,bgMagenta.bold\" \"yarn --cwd server deploy\" \"yarn --cwd client deploy\""
+    "start": "yarn && concurrently --names \"SERVER,CLIENT,SENTIM\" -c \"bgGreen.bold,bgMagenta.bold,bgCyan.bold\" \"yarn --cwd server start\" \"yarn --cwd client start\" \"yarn --cwd sentiment_server start\"",
+    "deploy": "yarn && concurrently --names \"SERVER,CLIENT,SENTIM\" -c \"bgGreen.bold,bgMagenta.bold,bgCyan.bold\" \"yarn --cwd server deploy\" \"yarn --cwd client deploy\" \"yarn --cwd sentiment_server deploy\""
   },
   "dependencies": {
     "concurrently": "^4.1.0"

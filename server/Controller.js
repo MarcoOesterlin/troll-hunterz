@@ -1,9 +1,6 @@
 import { uri } from './mongodbConfig.js';
 import { MongoClient } from 'mongodb';
-import Sentiment from 'sentiment';
 import axios from 'axios';
-
-const sentiment = new Sentiment();
 
 export default class Controller {
   constructor() {
@@ -60,7 +57,8 @@ export default class Controller {
     }
   
     try {
-      const analyzeResponse = await axios.get(`http://localhost:3002/analyze?value=${ value }`);
+      const { SENTIMENT_URI } = process.env;
+      const analyzeResponse = await axios.get(`${ SENTIMENT_URI }/analyze?value=${ value }`);
       const { comparative, score } = analyzeResponse.data;
       try {
         collection.insertOne({
@@ -77,7 +75,7 @@ export default class Controller {
         return;
       }
     } catch (err) {
-      res.status(500).send('Failed to analyze.');
+      res.status(500).send(`Failed to analyze.${ process.env.SENTIMENT_URI }`);
       return;
     }
   }

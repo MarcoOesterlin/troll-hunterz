@@ -17,9 +17,9 @@
     "nodemon": "^1.18.9"
   },
   "scripts": {
-    "start": "yarn && ./node_modules/.bin/nodemon",
+    "start": "SENTIMENT_URI='http://localhost:3002' yarn && ./node_modules/.bin/nodemon",
     "now-start": "node .",
-    "deploy": "now && yarn alias && yarn scale && echo Deploy complete.",
+    "deploy": "now && now -e SENTIMENT_URI='https://sentiment.now.sh' && yarn alias && yarn scale && echo Deploy complete.",
     "scale": "now scale troll-hunterz.now.sh 1 1",
     "alias": "now alias"
   }

@@ -19,7 +19,7 @@
     "start": "yarn && ./node_modules/.bin/nodemon",
     "now-start": "node .",
     "deploy": "now && yarn alias && yarn scale && echo Deploy complete.",
-    "scale": "now scale troll-hunterz.now.sh 1 1",
+    "scale": "now scale sentiment.now.sh 1 1",
     "alias": "now alias"
   }
 }

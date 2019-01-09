@@ -7,6 +7,7 @@
     "deploy": "concurrently --names \"SERVER,CLIENT\" -c \"bgGreen.bold,bgMagenta.bold\" \"yarn --cwd server deploy\" \"yarn --cwd client deploy\""
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "concurrently": "^4.1.0"
   }
 }

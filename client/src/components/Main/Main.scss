@@ -3,10 +3,19 @@ main {
   margin-right: auto;
   margin-top: 260px;
   margin-bottom: 50px;
-  width: 100%;
   padding: 40px 70px;
   background-color: #727271;
+  display: grid;
+  grid-template-areas: "toxic friendly";
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+
+
+  .toxic{
+    grid-area: toxic;
+  }
+
+  .friendly{
+      grid-area: friendly;
+  }
 }
-
-
-

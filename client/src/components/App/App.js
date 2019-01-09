@@ -99,9 +99,8 @@ class App extends React.Component {
       
         </Header> 
         <Main>
-          <Card title="Top 5 Most Toxic"/>
-          <Card title="Top 5 Most Nice"/>
-          <Card title="Latest Entries"/>
+          <Card title="Top 5 Most Toxic" className="toxic" entries={ entries }/>
+          <Card title="Top 5 Most Friendly" className="friendly" />
         </Main>
         <Footer/>
       </div>

@@ -134,6 +134,24 @@ export default class Controller {
       const sumScores = commentScores.reduce((a, b) => a + b, 0);
       return sumScores;
     };
+
+    const getImageUrl = async username => {
+      const parameters = {
+        'maxResults': '25',
+        'part': 'snippet',
+        'auth': youtubeAPIKey,
+        'forUsername': username,
+      };
+      try {
+        const googleResponse = await service.channels.list(parameters);
+        const imageUrl = googleResponse.data.items[0].snippet.thumbnails.default.url;
+        console.log(imageUrl);
+        return imageUrl;
+      } catch (e) {
+        console.log('Image not found');
+        return null;
+      }
+    }
     
     const channelId = await usernameToChannelId(username);
     if (!channelId) {
@@ -149,7 +167,7 @@ export default class Controller {
     ));
     const channelSentimentSum = videoSentimentScores.reduce((a, b) => a + b, 0);
 
-    const imgUrl = 'imgurl-placeholder';
+    const imgUrl = await getImageUrl(username);
     
     res.status(200).send({
       score: channelSentimentSum,

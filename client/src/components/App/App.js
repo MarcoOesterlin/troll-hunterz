@@ -89,7 +89,7 @@ class App extends React.Component {
           this.setState({
             bannerShow: true,
             userEntry: {
-              userName: entryResponse.value,
+              userName: entryResponse.userName,
               score: entryResponse.score,
               imageURL: entryResponse.imageURL
             }

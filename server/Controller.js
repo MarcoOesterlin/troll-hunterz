@@ -51,7 +51,7 @@ export default class Controller {
     });
   }
 
-  async insertEntry (req, res) {
+  insertEntry (req, res) {
     const { client } = this;
     const collection = client.db('trollhunterz').collection('entries');
     const { value } = req.body;

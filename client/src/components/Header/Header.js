@@ -16,7 +16,7 @@ class Header extends React.Component {
             </h1>
           </label>
           { this.props.children }
-          <EntryBanner bannerShow={this.props.bannerShow}/>
+          <EntryBanner bannerShow={this.props.bannerShow} userEntry = {this.props.userEntry}/>
         </header>
     );
   }

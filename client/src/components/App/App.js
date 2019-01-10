@@ -110,7 +110,7 @@ class App extends React.Component {
     
     return (
       <div className="App">
-        <Header display={ this.state.headerSize } bannerShow={ this.state.bannerShow } >
+        <Header display={ this.state.headerSize } bannerShow={ this.state.bannerShow } userEntry = {this.state.userEntry}>
           <TextField
             onSubmit={ onSubmitHandler }
             onChange={ onChangeHandler }

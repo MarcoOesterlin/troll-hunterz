@@ -5,9 +5,9 @@ import Header from '../Header/Header';
 import axios from 'axios';
 import { api } from '../../config';
 import TextField from '../TextField/TextField';
-import DataTable from '../DataTable/DataTable';
 import Footer from '../Footer/Footer'
 import Card from '../Card/Card'
+import ProfileCard from '../ProfileCard/ProfileCard'
 
 class App extends React.Component {
   constructor() {
@@ -99,8 +99,10 @@ class App extends React.Component {
       
         </Header> 
         <Main>
-          <Card title="Top 5 Most Toxic" className="toxic" entries={ entries }/>
-          <Card title="Top 5 Most Friendly" className="friendly" />
+          <Card title="Top 5 Most Toxic" className="toxic">
+            <ProfileCard/>
+          </Card>
+          <Card title="Top 5 Most Friendly" className="friendly"/>
         </Main>
         <Footer/>
       </div>

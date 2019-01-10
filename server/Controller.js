@@ -13,23 +13,41 @@ export default class Controller {
     this.mongoClient.connect();
     this.getAllEntries = this.getAllEntries.bind(this);
     this.insertEntry = this.insertEntry.bind(this);
+    this.youtubeEntry = this.youtubeEntry.bind(this);
   }
   
   getAllEntries(_req, res) {
-    const { mongoClient } = this;
-    const collection = mongoClient.db('trollhunterz').collection('entries');
-    collection.find({}).toArray((err, result) => {
-      if (err) {
-        res.status(500).send('Database failure');
-        return;
-      }
-      const entries = result.map(({ _id, comparative, score }) => ({
-        value: _id.value,
-        comparative,
-        score,
-      })).reverse();
-      res.status(200).send({ entries });
+    res.status(200).send({
+      toxic: [{
+        imageUrl: 'https://yt3.ggpht.com/a-/AAuE7mAcW198VrHrQqGTGs5EEXx7-Tv-qtFpWky1og=s88-mo-c-c0xffffffff-rj-k-no',
+        score: -7.182177975501057,
+        username: 'newdramaalert',
+      },{
+        imageUrl: 'https://yt3.ggpht.com/a-/AAuE7mD7iJevCngNeCAIs0-3F6Dn_L4LtFnVOcpp9w=s88-mo-c-c0xffffffff-rj-k-no',
+        score: 43.38968802213832,
+        username: 'h3h3productions',
+      }],
+      polite: [{
+        imageUrl: 'https://yt3.ggpht.com/a-/AAuE7mDZhAzA6_0IvivO8I50ZE8Wdw3XQY4v2V-nDA=s88-mo-c-c0xffffffff-rj-k-no',
+        score: 69.38185887861775,
+        username: 'destinws2',
+      }],
     });
+    
+    // const { mongoClient } = this;
+    // const collection = mongoClient.db('trollhunterz').collection('entries');
+    // collection.find({}).toArray((err, result) => {
+    //   if (err) {
+    //     res.status(500).send('Database failure');
+    //     return;
+    //   }
+    //   const entries = result.map(({ _id, comparative, score }) => ({
+    //     value: _id.value,
+    //     comparative,
+    //     score,
+    //   })).reverse();
+    //   res.status(200).send({ entries });
+    // });
   }
 
   async insertEntry (req, res) {
@@ -88,9 +106,9 @@ export default class Controller {
       }
     };
 
-    const channelIdToVideoIds = async channelId => {
+    const channelIdToVideoIds = async (channelId, maxResults) => {
       const parameters = {
-        'maxResults': '5',
+        'maxResults': maxResults,
         'part': 'snippet',
         'auth': youtubeAPIKey,
         'type': 'video',
@@ -123,52 +141,59 @@ export default class Controller {
         const comments = items.map(item => item.snippet.topLevelComment.snippet.textOriginal);
         return comments;
       } catch (e) {
-        return null;
+        return [];
       }
     }
     
     const summarizeVideoComments = async videoComments => {
-      const videoScore = await Promise.all(videoComments.map(videoComment => {
-        axios.get(
+      const commentScores = await Promise.all(videoComments.map(async videoComment => {
+        const sentimentResponse = await axios.get(
           `${ sentimentURI }/analyze?value=${ encodeURI(videoComment) }`
-        ).then(res => {
-          const { comparative } = res.data;
-          return comparative;
-        }).catch(err => {
-          console.log('Failed to analyze', err);
-        });
+        );
+        return sentimentResponse.data.comparative;
       }));
-      return videoScore;
+      const sumScores = commentScores.reduce((a, b) => a + b, 0);
+      return sumScores;
     };
+
+    const getImageUrl = async username => {
+      const parameters = {
+        'maxResults': '25',
+        'part': 'snippet',
+        'auth': youtubeAPIKey,
+        'forUsername': username,
+      };
+      try {
+        const googleResponse = await service.channels.list(parameters);
+        const imageUrl = googleResponse.data.items[0].snippet.thumbnails.default.url;
+        console.log(imageUrl);
+        return imageUrl;
+      } catch (e) {
+        console.log('Image not found');
+        return null;
+      }
+    }
     
     const channelId = await usernameToChannelId(username);
     if (!channelId) {
       res.status(400).send('Channel not found.');
       return;
-    } else {
-      res.status(200).send(channelId);
     }
-    const videoIds = await channelIdToVideoIds(channelId);
-    // const videosComments = await Promise.all(
-    //   videoIds.map(videoId => retrieveComments(videoId, 2)),
-    // );
-    // const videoSentimentScores = await Promise.all(
-    //   videosComments.map(videoComments => summarizeVideoComments(videoComments),
-    // ));
-    // console.log(videoSentimentScores);
-    const comments = await retrieveComments(videoIds[0], 100);
-    const scores = await Promise.all(
-      comments.map(async comment => {
-        try {
-          const analyzeResponse = await axios.get(`${ sentimentURI }/analyze?value=${ encodeURI(comment) }`);
-          const { comparative } = analyzeResponse.data;
-          return comparative;
-        } catch (e) {
-          console.log('Analyze failed', e);
-        }
-      })
+    const videoIds = await channelIdToVideoIds(channelId, 10);
+    const videosComments = await Promise.all(
+      videoIds.map(videoId => retrieveComments(videoId, 100)),
     );
-    console.log('videoId', videoIds[0]);
-    console.log('Sum score', scores.reduce((a, b) => a + b, 0));
+    const videoSentimentScores = await Promise.all(
+      videosComments.map(videoComments => summarizeVideoComments(videoComments),
+    ));
+    const channelSentimentSum = videoSentimentScores.reduce((a, b) => a + b, 0);
+
+    const imgUrl = await getImageUrl(username);
+    
+    res.status(200).send({
+      score: channelSentimentSum,
+      username: username,
+      imgUrl: imgUrl,
+    });
   }
 }

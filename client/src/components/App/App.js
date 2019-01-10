@@ -9,6 +9,7 @@ import DataTable from "../DataTable/DataTable";
 import Footer from "../Footer/Footer";
 import Card from "../Card/Card";
 import ProfileListItem from "../ProfileListItem/ProfileListItem";
+import EntryBanner from "../EntryBanner/EntryBanner";
 
 class App extends React.Component {
   constructor() {
@@ -18,7 +19,12 @@ class App extends React.Component {
       politeEntries: [],
       toxicEntries: [],
       textFieldValue: "",
-      headerSize: "large"
+      headerSize: "large",
+      bannerShow: false,
+      userEntry: {
+        userName: "",
+        score: ""
+      }
     };
   }
 
@@ -63,19 +69,27 @@ class App extends React.Component {
         return;
       }
 
-      this.setState({
-        entries: [
-          {
-            value: textFieldValue
-          },
-          ...this.state.entries
-        ]
-      });
       axios
         .post(`${api}/entry`, { value: textFieldValue })
-        .then(() => {
+        .then(res => {
+          const entryResponse = res.data;
           this.fetchEntries();
           this.clearTextField();
+          console.log(entryResponse.value);
+          console.log(entryResponse.comparative);
+          this.setState({
+            bannerShow: true,
+            userEntry: {
+              userName: entryResponse.value,
+              score: entryResponse.comparative
+            },
+            entries: [
+              {
+                value: textFieldValue
+              },
+              ...this.state.entries
+            ]
+          });
         })
         .catch(() => {
           console.log(`Failed to post entry`);
@@ -94,7 +108,11 @@ class App extends React.Component {
 
     return (
       <div className="App">
-        <Header display={this.state.headerSize}>
+        <Header
+          display={this.state.headerSize}
+          bannerShow={this.state.bannerShow}
+          userEntry={this.state.userEntry}
+        >
           <TextField
             onSubmit={onSubmitHandler}
             onChange={onChangeHandler}
@@ -103,7 +121,11 @@ class App extends React.Component {
         </Header>
         <Main>
           <Card title="Top 5 Most Toxic" className="toxic" entries={entries} />
-          <Card title="Top 5 Most Friendly" className="friendly" />
+          <Card
+            title="Top 5 Most Friendly"
+            className="friendly"
+            entries={entries}
+          />
         </Main>
         <Footer />
       </div>

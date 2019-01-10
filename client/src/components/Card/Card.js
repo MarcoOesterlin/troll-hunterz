@@ -1,8 +1,7 @@
 import React from 'react';
 import './Card.scss';
 import DataTable from '../DataTable/DataTable';
-import axios from 'axios';
-import { api } from '../../config';
+
 
 
 class Card extends React.Component {

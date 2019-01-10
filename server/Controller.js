@@ -2,23 +2,22 @@ import { uri } from './mongodbConfig.js';
 import { MongoClient } from 'mongodb';
 import axios from 'axios';
 import { sentimentURI } from './config';
-
+import youtubeAPIKey from './youtubeAPIKey';
+import {google} from 'googleapis';
 export default class Controller {
   constructor() {
-    const mongoClient = new MongoClient(
+    this.mongoClient = new MongoClient(
       uri,
       { useNewUrlParser: true },
     );
-    mongoClient.connect();
-    this.client = mongoClient;
+    this.mongoClient.connect();
     this.getAllEntries = this.getAllEntries.bind(this);
     this.insertEntry = this.insertEntry.bind(this);
-    this.getEntry = this.getEntry.bind(this);
   }
   
   getAllEntries(_req, res) {
-    const { client } = this;
-    const collection = client.db('trollhunterz').collection('entries');
+    const { mongoClient } = this;
+    const collection = mongoClient.db('trollhunterz').collection('entries');
     collection.find({}).toArray((err, result) => {
       if (err) {
         res.status(500).send('Database failure');
@@ -33,27 +32,9 @@ export default class Controller {
     });
   }
 
-  getEntry(req, res) {
-    const { client } = this;
-    const { value } = req.body;
-    const collection = client.db('trollhunterz').collection('entries');
-    collection.find({ _id: { value } }).toArray((err, result) => {
-      if (err) {
-        res.sendStatus(500);
-        return;
-      }
-      const entries = result.map(({ _id, comparative, score }) => ({
-        value: _id.value,
-        comparative,
-        score,
-      }));
-      res.status(200).send({ entries });
-    });
-  }
-
   async insertEntry (req, res) {
-    const { client } = this;
-    const collection = client.db('trollhunterz').collection('entries');
+    const { mongoClient } = this;
+    const collection = mongoClient.db('trollhunterz').collection('entries');
     const { value } = req.body;
     if (!value) {
       res.status(400).send('Empty body');
@@ -85,5 +66,109 @@ export default class Controller {
       res.status(500).send(`Failed to analyze.${ process.env.SENTIMENT_URI }`);
       return;
     }
+  }
+
+  async youtubeEntry(req, res) {
+    const service = google.youtube('v3');
+    const { username } = req.body;
+
+    const usernameToChannelId = async username => {
+      const parameters = {
+        'maxResults': '25',
+        'part': 'snippet',
+        'auth': youtubeAPIKey,
+        'forUsername': username,
+      };
+      try {
+        const googleResponse = await service.channels.list(parameters);
+        const channelId = googleResponse.data.items[0].id;
+        return channelId;
+      } catch (e) {
+        return null;
+      }
+    };
+
+    const channelIdToVideoIds = async channelId => {
+      const parameters = {
+        'maxResults': '5',
+        'part': 'snippet',
+        'auth': youtubeAPIKey,
+        'type': 'video',
+        'channelId': channelId,
+        'order': 'viewCount',
+      };
+      try {
+        const googleResponse = await service.search.list(parameters);
+        const { data } = googleResponse;
+        const { items } = data;
+        const videoIds = items.map(item => item.id.videoId);
+        return videoIds;
+      } catch (e) {
+        return null;
+      }
+    }
+    
+    const retrieveComments = async (videoId, maxResults) => {
+      const parameters = {
+        'maxResults': maxResults,
+        'part': 'snippet',
+        'auth': youtubeAPIKey,
+        videoId,
+        'order': 'relevance',
+      };
+      try {
+        const googleResponse = await service.commentThreads.list(parameters);
+        const { data } = googleResponse;
+        const { items } = data;
+        const comments = items.map(item => item.snippet.topLevelComment.snippet.textOriginal);
+        return comments;
+      } catch (e) {
+        return null;
+      }
+    }
+    
+    const summarizeVideoComments = async videoComments => {
+      const videoScore = await Promise.all(videoComments.map(videoComment => {
+        axios.get(
+          `${ sentimentURI }/analyze?value=${ encodeURI(videoComment) }`
+        ).then(res => {
+          const { comparative } = res.data;
+          return comparative;
+        }).catch(err => {
+          console.log('Failed to analyze', err);
+        });
+      }));
+      return videoScore;
+    };
+    
+    const channelId = await usernameToChannelId(username);
+    if (!channelId) {
+      res.status(400).send('Channel not found.');
+      return;
+    } else {
+      res.status(200).send(channelId);
+    }
+    const videoIds = await channelIdToVideoIds(channelId);
+    // const videosComments = await Promise.all(
+    //   videoIds.map(videoId => retrieveComments(videoId, 2)),
+    // );
+    // const videoSentimentScores = await Promise.all(
+    //   videosComments.map(videoComments => summarizeVideoComments(videoComments),
+    // ));
+    // console.log(videoSentimentScores);
+    const comments = await retrieveComments(videoIds[0], 100);
+    const scores = await Promise.all(
+      comments.map(async comment => {
+        try {
+          const analyzeResponse = await axios.get(`${ sentimentURI }/analyze?value=${ encodeURI(comment) }`);
+          const { comparative } = analyzeResponse.data;
+          return comparative;
+        } catch (e) {
+          console.log('Analyze failed', e);
+        }
+      })
+    );
+    console.log('videoId', videoIds[0]);
+    console.log('Sum score', scores.reduce((a, b) => a + b, 0));
   }
 }

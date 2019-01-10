@@ -14,7 +14,6 @@ import EntryBanner from "../EntryBanner/EntryBanner";
 class App extends React.Component {
   constructor() {
     super();
-    this.handleScroll = this.handleScroll.bind(this);
     this.state = {
       politeEntries: [],
       toxicEntries: [],
@@ -38,7 +37,7 @@ class App extends React.Component {
     window.removeEventListener("scroll", this.handleScroll);
   }
 
-  handleScroll(e) {
+  handleScroll = e => {
     if (window.scrollY > 150) {
       if (this.state.headerSize !== "small") {
         this.setState({ headerSize: "small" });
@@ -48,7 +47,7 @@ class App extends React.Component {
         this.setState({ headerSize: "large" });
       }
     }
-  }
+  };
 
   fetchEntries = () => {
     axios.get(`${api}/entries`).then(res => {

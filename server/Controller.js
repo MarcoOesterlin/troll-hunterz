@@ -13,6 +13,7 @@ export default class Controller {
     this.mongoClient.connect();
     this.getAllEntries = this.getAllEntries.bind(this);
     this.insertEntry = this.insertEntry.bind(this);
+    this.youtubeEntry = this.youtubeEntry.bind(this);
   }
   
   getAllEntries(_req, res) {
@@ -84,9 +85,9 @@ export default class Controller {
       }
     };
 
-    const channelIdToVideoIds = async channelId => {
+    const channelIdToVideoIds = async (channelId, maxResults) => {
       const parameters = {
-        'maxResults': '5',
+        'maxResults': maxResults,
         'part': 'snippet',
         'auth': youtubeAPIKey,
         'type': 'video',
@@ -119,52 +120,41 @@ export default class Controller {
         const comments = items.map(item => item.snippet.topLevelComment.snippet.textOriginal);
         return comments;
       } catch (e) {
-        return null;
+        return [];
       }
     }
     
     const summarizeVideoComments = async videoComments => {
-      const videoScore = await Promise.all(videoComments.map(videoComment => {
-        axios.get(
+      const commentScores = await Promise.all(videoComments.map(async videoComment => {
+        const sentimentResponse = await axios.get(
           `${ sentimentURI }/analyze?value=${ encodeURI(videoComment) }`
-        ).then(res => {
-          const { comparative } = res.data;
-          return comparative;
-        }).catch(err => {
-          console.log('Failed to analyze', err);
-        });
+        );
+        return sentimentResponse.data.comparative;
       }));
-      return videoScore;
+      const sumScores = commentScores.reduce((a, b) => a + b, 0);
+      return sumScores;
     };
     
     const channelId = await usernameToChannelId(username);
     if (!channelId) {
       res.status(400).send('Channel not found.');
       return;
-    } else {
-      res.status(200).send(channelId);
     }
-    const videoIds = await channelIdToVideoIds(channelId);
-    // const videosComments = await Promise.all(
-    //   videoIds.map(videoId => retrieveComments(videoId, 2)),
-    // );
-    // const videoSentimentScores = await Promise.all(
-    //   videosComments.map(videoComments => summarizeVideoComments(videoComments),
-    // ));
-    // console.log(videoSentimentScores);
-    const comments = await retrieveComments(videoIds[0], 100);
-    const scores = await Promise.all(
-      comments.map(async comment => {
-        try {
-          const analyzeResponse = await axios.get(`${ sentimentURI }/analyze?value=${ encodeURI(comment) }`);
-          const { comparative } = analyzeResponse.data;
-          return comparative;
-        } catch (e) {
-          console.log('Analyze failed', e);
-        }
-      })
+    const videoIds = await channelIdToVideoIds(channelId, 10);
+    const videosComments = await Promise.all(
+      videoIds.map(videoId => retrieveComments(videoId, 100)),
     );
-    console.log('videoId', videoIds[0]);
-    console.log('Sum score', scores.reduce((a, b) => a + b, 0));
+    const videoSentimentScores = await Promise.all(
+      videosComments.map(videoComments => summarizeVideoComments(videoComments),
+    ));
+    const channelSentimentSum = videoSentimentScores.reduce((a, b) => a + b, 0);
+
+    const imgUrl = 'imgurl-placeholder';
+    
+    res.status(200).send({
+      score: channelSentimentSum,
+      username: username,
+      imgUrl: imgUrl,
+    });
   }
 }

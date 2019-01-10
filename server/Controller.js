@@ -11,9 +11,12 @@ export default class Controller {
     );
     mongoClient.connect();
     this.client = mongoClient;
+    this.getAllEntries = this.getAllEntries.bind(this);
+    this.insertEntry = this.insertEntry.bind(this);
+    this.getEntry = this.getEntry.bind(this);
   }
   
-  getAllEntries = (_req, res) => {
+  getAllEntries(_req, res) {
     const { client } = this;
     const collection = client.db('trollhunterz').collection('entries');
     collection.find({}).toArray((err, result) => {
@@ -30,7 +33,7 @@ export default class Controller {
     });
   }
 
-  getEntry = (req, res) => {
+  getEntry(req, res) {
     const { client } = this;
     const { value } = req.body;
     const collection = client.db('trollhunterz').collection('entries');
@@ -48,7 +51,7 @@ export default class Controller {
     });
   }
 
-  insertEntry = async (req, res) => {
+  async insertEntry (req, res) {
     const { client } = this;
     const collection = client.db('trollhunterz').collection('entries');
     const { value } = req.body;

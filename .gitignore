@@ -5,3 +5,4 @@ client/build
 .netlify/state.json
 server/mongodbConfig.js
 server/youtubeAPIKey.js
+server/yarn-error.log

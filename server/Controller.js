@@ -18,20 +18,22 @@ export default class Controller {
   
   getAllEntries(_req, res) {
     res.status(200).send({
-      toxic: [{
-        imageUrl: 'https://yt3.ggpht.com/a-/AAuE7mAcW198VrHrQqGTGs5EEXx7-Tv-qtFpWky1og=s88-mo-c-c0xffffffff-rj-k-no',
-        score: -7.182177975501057,
-        username: 'newdramaalert',
-      },{
-        imageUrl: 'https://yt3.ggpht.com/a-/AAuE7mD7iJevCngNeCAIs0-3F6Dn_L4LtFnVOcpp9w=s88-mo-c-c0xffffffff-rj-k-no',
-        score: 43.38968802213832,
-        username: 'h3h3productions',
-      }],
-      polite: [{
-        imageUrl: 'https://yt3.ggpht.com/a-/AAuE7mDZhAzA6_0IvivO8I50ZE8Wdw3XQY4v2V-nDA=s88-mo-c-c0xffffffff-rj-k-no',
-        score: 69.38185887861775,
-        username: 'destinws2',
-      }],
+      entries: {
+        toxic: [{
+          imageUrl: 'https://yt3.ggpht.com/a-/AAuE7mAcW198VrHrQqGTGs5EEXx7-Tv-qtFpWky1og=s88-mo-c-c0xffffffff-rj-k-no',
+          score: -7.182177975501057,
+          username: 'newdramaalert',
+        },{
+          imageUrl: 'https://yt3.ggpht.com/a-/AAuE7mD7iJevCngNeCAIs0-3F6Dn_L4LtFnVOcpp9w=s88-mo-c-c0xffffffff-rj-k-no',
+          score: 43.38968802213832,
+          username: 'h3h3productions',
+        }],
+        polite: [{
+          imageUrl: 'https://yt3.ggpht.com/a-/AAuE7mDZhAzA6_0IvivO8I50ZE8Wdw3XQY4v2V-nDA=s88-mo-c-c0xffffffff-rj-k-no',
+          score: 69.38185887861775,
+          username: 'destinws2',
+        }],
+      }
     });
     
     // const { mongoClient } = this;

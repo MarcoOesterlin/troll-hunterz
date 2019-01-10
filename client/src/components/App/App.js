@@ -23,7 +23,8 @@ class App extends React.Component {
       bannerShow: false,
       userEntry: {
         userName: "",
-        score: ""
+        score: "",
+        imageURL: ""
       }
     };
   }
@@ -52,7 +53,14 @@ class App extends React.Component {
   fetchEntries = () => {
     axios.get(`${api}/entries`).then(res => {
       const { entries } = res.data;
-      this.setState({ entries });
+      // this.setState({ entries });
+      ////
+      const toxic = entries.toxic;
+      const polite = entries.polite;
+      this.setState({
+        toxicEntries: toxic,
+        politeEntries: polite
+      });
     });
   };
 
@@ -77,18 +85,14 @@ class App extends React.Component {
           this.clearTextField();
           console.log(entryResponse.value);
           console.log(entryResponse.comparative);
+
           this.setState({
             bannerShow: true,
             userEntry: {
               userName: entryResponse.value,
-              score: entryResponse.comparative
-            },
-            entries: [
-              {
-                value: textFieldValue
-              },
-              ...this.state.entries
-            ]
+              score: entryResponse.score,
+              imageURL: entryResponse.imageURL
+            }
           });
         })
         .catch(() => {
@@ -104,7 +108,7 @@ class App extends React.Component {
 
   render() {
     const { onSubmitHandler, onChangeHandler } = this;
-    const { entries, textFieldValue } = this.state;
+    const { textFieldValue, toxicEntries, politeEntries } = this.state;
 
     return (
       <div className="App">
@@ -120,11 +124,15 @@ class App extends React.Component {
           />
         </Header>
         <Main>
-          <Card title="Top 5 Most Toxic" className="toxic" entries={entries} />
+          <Card
+            title="Top 5 Most Toxic"
+            className="toxic"
+            entries={toxicEntries}
+          />
           <Card
             title="Top 5 Most Friendly"
             className="friendly"
-            entries={entries}
+            entries={politeEntries}
           />
         </Main>
         <Footer />

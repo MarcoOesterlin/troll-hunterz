@@ -12,7 +12,6 @@ import Card from '../Card/Card'
 class App extends React.Component {
   constructor() {
     super();
-    this.handleScroll = this.handleScroll.bind(this);
     this.state = {
       entries: [],
       textFieldValue: '',
@@ -29,7 +28,7 @@ class App extends React.Component {
     window.removeEventListener('scroll', this.handleScroll);
   }
 
-  handleScroll(e) {
+  handleScroll = (e) => {
     if(window.scrollY > 150) {
       if (this.state.headerSize !== 'small') {
         this.setState({headerSize: 'small'});

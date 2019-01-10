@@ -71,11 +71,6 @@ class App extends React.Component {
     e.preventDefault();
     const { textFieldValue } = this.state;
     if (textFieldValue) {
-      // Return if new entry already exists
-      if (this.state.entries.some(e => e.value === textFieldValue)) {
-        return;
-      }
-
       axios
         .post(`${api}/entry`, { value: textFieldValue })
         .then(res => {

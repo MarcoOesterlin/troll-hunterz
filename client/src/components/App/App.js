@@ -15,7 +15,8 @@ class App extends React.Component {
     super();
     this.handleScroll = this.handleScroll.bind(this);
     this.state = {
-      entries: [],
+      politeEntries: [],
+      toxicEntries: [],
       textFieldValue: "",
       headerSize: "large"
     };
@@ -90,7 +91,7 @@ class App extends React.Component {
   render() {
     const { onSubmitHandler, onChangeHandler } = this;
     const { entries, textFieldValue } = this.state;
-    console.log("lol");
+
     return (
       <div className="App">
         <Header display={this.state.headerSize}>

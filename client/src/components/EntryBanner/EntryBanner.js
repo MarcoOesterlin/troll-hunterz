@@ -4,14 +4,14 @@ class EntryBanner extends React.Component {
   render() {
     const showBanner = this.props.bannerShow;
     const bannerClass = showBanner ? "entryBannerShow" : "entryBannerHide";
-    const userURL = `https://www.youtube.com/user/${this.props.userName}`;
+    const userUrl = `https://www.youtube.com/user/${this.props.username}`;
     return (
       <div className={bannerClass}>
         <h2>
-          <a href={userURL}>
-            <img src={this.props.userEntry.imageUR} />
+          <a href={userUrl}>
+            <img src={this.props.userEntry.imageUrl} />
           </a>
-          Your Latest Entry: {this.props.userEntry.userName} :{" "}
+          Your Latest Entry: {this.props.userEntry.username} :{" "}
           {this.props.userEntry.score}
         </h2>
       </div>

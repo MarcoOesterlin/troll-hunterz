@@ -21,9 +21,9 @@ class App extends React.Component {
       headerSize: "large",
       bannerShow: false,
       userEntry: {
-        userName: "",
+        username: "",
         score: "",
-        imageURL: ""
+        imageUrl: ""
       }
     };
   }
@@ -88,9 +88,9 @@ class App extends React.Component {
           this.setState({
             bannerShow: true,
             userEntry: {
-              userName: entryResponse.userName,
+              username: entryResponse.username,
               score: entryResponse.score,
-              imageURL: entryResponse.imageURL
+              imageUrl: entryResponse.imageUrl
             }
           });
         })

@@ -5,6 +5,9 @@ import DataRow from './DataRow/DataRow';
 class DataTable extends React.Component {
   render() {
     const { entries } = this.props;
+    if (!entries) {
+      return null;
+    }
     return (
       <table>
         <thead>

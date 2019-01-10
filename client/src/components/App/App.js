@@ -1,13 +1,13 @@
-import React from 'react';
-import './App.scss';
-import Main from '../Main/Main';
-import Header from '../Header/Header';
-import axios from 'axios';
-import { api } from '../../config';
-import TextField from '../TextField/TextField';
-import DataTable from '../DataTable/DataTable';
-import Footer from '../Footer/Footer'
-import Card from '../Card/Card'
+import React from "react";
+import "./App.scss";
+import Main from "../Main/Main";
+import Header from "../Header/Header";
+import axios from "axios";
+import { api } from "../../config";
+import TextField from "../TextField/TextField";
+import DataTable from "../DataTable/DataTable";
+import Footer from "../Footer/Footer";
+import Card from "../Card/Card";
 
 class App extends React.Component {
   constructor() {
@@ -15,45 +15,43 @@ class App extends React.Component {
     this.handleScroll = this.handleScroll.bind(this);
     this.state = {
       entries: [],
-      textFieldValue: '',
-      headerSize: 'large',
+      textFieldValue: "",
+      headerSize: "large"
     };
   }
 
   componentDidMount() {
     this.fetchEntries();
-    window.addEventListener('scroll', this.handleScroll);
+    window.addEventListener("scroll", this.handleScroll);
   }
-  
-  componentWillUnmount(){
-    window.removeEventListener('scroll', this.handleScroll);
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
   }
 
   handleScroll(e) {
-    if(window.scrollY > 150) {
-      if (this.state.headerSize !== 'small') {
-        this.setState({headerSize: 'small'});
+    if (window.scrollY > 150) {
+      if (this.state.headerSize !== "small") {
+        this.setState({ headerSize: "small" });
       }
     } else {
-      if (this.state.headerSize !== 'large') {
-        this.setState({headerSize: 'large'});
+      if (this.state.headerSize !== "large") {
+        this.setState({ headerSize: "large" });
       }
     }
   }
 
-
   fetchEntries = () => {
-    axios.get(`${ api }/entries`)
-      .then((res) => {
-        const { entries } = res.data;
-        this.setState({ entries });
-      });
-  }
-  
+    axios.get(`${api}/entries`).then(res => {
+      const { entries } = res.data;
+      this.setState({ entries });
+    });
+  };
+
   clearTextField = () => {
-    this.setState({ textFieldValue: '' });
-  }
-  
+    this.setState({ textFieldValue: "" });
+  };
+
   onSubmitHandler = e => {
     e.preventDefault();
     const { textFieldValue } = this.state;
@@ -62,14 +60,17 @@ class App extends React.Component {
       if (this.state.entries.some(e => e.value === textFieldValue)) {
         return;
       }
-      
+
       this.setState({
-        entries: [{
-          value: textFieldValue,
-        },
-        ...this.state.entries,
-      ]});
-      axios.post(`${ api }/entry`, { value: textFieldValue })
+        entries: [
+          {
+            value: textFieldValue
+          },
+          ...this.state.entries
+        ]
+      });
+      axios
+        .post(`${api}/entry`, { value: textFieldValue })
         .then(() => {
           this.fetchEntries();
           this.clearTextField();
@@ -78,31 +79,31 @@ class App extends React.Component {
           console.log(`Failed to post entry`);
         });
     }
-  }
+  };
 
   onChangeHandler = e => {
     const { value } = e.currentTarget;
     this.setState({ textFieldValue: value });
-  }
-  
+  };
+
   render() {
     const { onSubmitHandler, onChangeHandler } = this;
     const { entries, textFieldValue } = this.state;
+    console.log("lol");
     return (
       <div className="App">
-        <Header display={ this.state.headerSize }>
+        <Header display={this.state.headerSize}>
           <TextField
-            onSubmit={ onSubmitHandler }
-            onChange={ onChangeHandler }
-            value={ textFieldValue }
+            onSubmit={onSubmitHandler}
+            onChange={onChangeHandler}
+            value={textFieldValue}
           />
-      
-        </Header> 
+        </Header>
         <Main>
-          <Card title="Top 5 Most Toxic" className="toxic" entries={ entries }/>
+          <Card title="Top 5 Most Toxic" className="toxic" entries={entries} />
           <Card title="Top 5 Most Friendly" className="friendly" />
         </Main>
-        <Footer/>
+        <Footer />
       </div>
     );
   }

@@ -4,3 +4,4 @@ client/build
 .vscode/
 .netlify/state.json
 server/mongodbConfig.js
+server/youtubeAPIKey.js

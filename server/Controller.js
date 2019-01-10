@@ -86,7 +86,7 @@ export default class Controller {
 
   async youtubeEntry(req, res) {
     const service = google.youtube('v3');
-    const { username } = req.body;
+    const { username } = req.body.value;
 
     const usernameToChannelId = async username => {
       const parameters = {

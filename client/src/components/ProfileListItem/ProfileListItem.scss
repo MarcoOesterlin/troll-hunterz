@@ -1,3 +1,31 @@
 .ListItem {
-  color: red;
+  display: grid;
+  grid-template-areas:
+    "divider divider divider"
+    "profile-image username score";
+
+  grid-gap: 20px;
+  padding: 10px 20px;
+
+  color: #fdd947;
+
+  .divider {
+    grid-area: divider;
+  }
+
+  .profile-image {
+    grid-area: profile-image;
+
+    img {
+      border-radius: 300px;
+    }
+  }
+
+  .username {
+    grid-area: username;
+  }
+
+  .score {
+    grid-area: score;
+  }
 }

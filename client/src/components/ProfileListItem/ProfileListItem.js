@@ -10,18 +10,19 @@ class ProfileListItem extends React.Component {
     const roundScore = Math.round(this.props.entry.score * 10) / 10;
     return (
       <div className="listItem">
-        <Divider className="divider" />
-        <img src={this.props.entry.bannerUrl} />
-        <a
-          href={userUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="profile-image"
-        >
-          <img src={this.props.entry.imgUrl} alt="Profile" />
-        </a>
-        <h3 className="channel-title"> {this.props.entry.channelTitle} </h3>
-        <h3 className="score"> {roundScore} </h3>
+        <div className="grid">
+          <a
+            href={userUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="profile-image"
+          >
+            <img src={this.props.entry.imgUrl} alt="Profile" />
+          </a>
+          <h3 className="channel-title"> {this.props.entry.channelTitle} </h3>
+          <h3 className="score"> {roundScore} </h3>
+        </div>
+        <img className="banner" src={this.props.entry.bannerUrl} />
       </div>
     );
   }

@@ -87,12 +87,14 @@ class App extends React.Component {
             }
           });
         })
-        .catch(() => {
+        .catch(error => {
           console.log(`Failed to post entry`);
+
           this.setState({
             bannerShow: true,
             userEntry: {
-              username: "Failed to post entry"
+              username:
+                "Failed to post entry, try to use a different search term"
             }
           });
         });

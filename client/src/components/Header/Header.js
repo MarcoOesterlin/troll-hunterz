@@ -25,10 +25,12 @@ class Header extends React.Component {
           </h1>
         </label>
         {this.props.children}
-        <EntryBanner
-          bannerShow={this.props.bannerShow}
-          userEntry={this.props.userEntry}
-        />
+        {this.props.display === "large" && (
+          <EntryBanner
+            bannerShow={this.props.bannerShow}
+            userEntry={this.props.userEntry}
+          />
+        )}
       </header>
     );
   }

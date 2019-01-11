@@ -21,6 +21,8 @@ class App extends React.Component {
         username: "",
         score: "",
         imgUrl: "",
+        channelId: "",
+        channelTitle: "",
         showTutorial: false
       },
       isFetching: false
@@ -39,11 +41,11 @@ class App extends React.Component {
   handleScroll = e => {
     if (window.scrollY > 150) {
       if (this.state.headerSize !== "small") {
-        this.setState({ headerSize: "small", bannerShow: false });
+        this.setState({ headerSize: "small" });
       }
     } else {
       if (this.state.headerSize !== "large") {
-        this.setState({ headerSize: "large", bannerShow: true });
+        this.setState({ headerSize: "large" });
       }
     }
   };
@@ -51,8 +53,7 @@ class App extends React.Component {
   fetchEntries = () => {
     axios.get(`${api}/entries`).then(res => {
       const { entries } = res.data;
-      // this.setState({ entries });
-      ////
+
       const toxic = entries.toxic;
       const polite = entries.polite;
       this.setState({
@@ -85,7 +86,9 @@ class App extends React.Component {
             userEntry: {
               username: entryResponse.username,
               score: entryResponse.score,
-              imgUrl: entryResponse.imgUrl
+              imgUrl: entryResponse.imgUrl,
+              channelId: entryResponse.channelId,
+              channelTitle: entryResponse.channelTitle
             },
             isFetching: false
           });

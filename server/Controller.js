@@ -72,9 +72,9 @@ export default class Controller {
         return;
       }
       const sortedEntries = mongoDbResponse.map(entry => {
-        const { _id, score, imgUrl, channelTitle } = entry;
+        const { _id, score, imgUrl, channelTitle, bannerUrl } = entry;
         const { channelId, timestamp } = _id;
-        return { score, imgUrl, channelId, timestamp, channelTitle };
+        return { score, imgUrl, channelId, timestamp, channelTitle, bannerUrl };
       });
       const uniqueByChannelId = getLatestByChannelId(sortedEntries);
       console.log(uniqueByChannelId);

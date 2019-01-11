@@ -1,19 +1,21 @@
-import React from 'react';
-import './TextField.scss';
+import React from "react";
+import "./TextField.scss";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 class TextField extends React.Component {
   render() {
-    const { onSubmit, onChange, value } = this.props;
+    const { onSubmit, onChange, value, isFetching } = this.props;
     return (
       <div className="text-field">
-        <form onSubmit={ onSubmit }>
+        <form onSubmit={onSubmit}>
           <input
             type="text"
             name="textfield"
             id="textfield"
-            onChange={ onChange }
-            value={ value }
+            onChange={onChange}
+            value={value}
           />
+          {isFetching && <LinearProgress size={15} className="progress-bar" />}
         </form>
       </div>
     );

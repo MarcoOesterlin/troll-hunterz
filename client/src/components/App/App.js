@@ -22,7 +22,8 @@ class App extends React.Component {
         score: "",
         imgUrl: "",
         showTutorial: false
-      }
+      },
+      isFetching: false
     };
   }
 
@@ -69,6 +70,9 @@ class App extends React.Component {
     e.preventDefault();
     const { textFieldValue } = this.state;
     if (textFieldValue) {
+      this.setState({
+        isFetching: true
+      });
       axios
         .post(`${api}/entry`, { value: textFieldValue })
         .then(res => {
@@ -82,7 +86,8 @@ class App extends React.Component {
               username: entryResponse.username,
               score: entryResponse.score,
               imgUrl: entryResponse.imgUrl
-            }
+            },
+            isFetching: false
           });
         })
         .catch(error => {
@@ -94,7 +99,8 @@ class App extends React.Component {
               username:
                 "Failed to post entry, try to use a different search term",
               showTutorial: true
-            }
+            },
+            isFetching: false
           });
         });
     }
@@ -107,7 +113,12 @@ class App extends React.Component {
 
   render() {
     const { onSubmitHandler, onChangeHandler } = this;
-    const { textFieldValue, toxicEntries, politeEntries } = this.state;
+    const {
+      textFieldValue,
+      toxicEntries,
+      politeEntries,
+      isFetching
+    } = this.state;
 
     return (
       <div className="App">
@@ -120,6 +131,7 @@ class App extends React.Component {
             onSubmit={onSubmitHandler}
             onChange={onChangeHandler}
             value={textFieldValue}
+            isFetching={isFetching}
           />
         </Header>
         <Main>

@@ -5,22 +5,22 @@ class EntryBanner extends React.Component {
   render() {
     const showBanner = this.props.bannerShow;
     const bannerClass = showBanner ? "entryBannerShow" : "entryBannerHide";
-    const userUrl = `https://www.youtube.com/user/${this.props.username}`;
+    const userUrl = `https://www.youtube.com/user/${
+      this.props.userEntry.username
+    }`;
     const showTutorial = this.props.userEntry.showTutorial;
-    let tutorial = "";
-    if (showTutorial) {
-      tutorial = <TutorialComponent />;
-    }
+    const roundScore = Math.round(this.props.userEntry.score * 10) / 10;
 
     return (
       <div className={bannerClass}>
         <h2>
-          <a href={userUrl}>
-            <img src={this.props.userEntry.imageUrl} />
-          </a>
-          Your Latest Entry: {this.props.userEntry.username} :{" "}
-          {this.props.userEntry.score}
-          {tutorial}
+          {showTutorial ? (
+            <TutorialComponent />
+          ) : (
+            <a href={userUrl} target="_blank">
+              Your Latest Entry: {this.props.userEntry.username} :{roundScore}
+            </a>
+          )}
         </h2>
       </div>
     );

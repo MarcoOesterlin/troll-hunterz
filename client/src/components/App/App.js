@@ -5,11 +5,8 @@ import Header from "../Header/Header";
 import axios from "axios";
 import { api } from "../../config";
 import TextField from "../TextField/TextField";
-import DataTable from "../DataTable/DataTable";
 import Footer from "../Footer/Footer";
 import Card from "../Card/Card";
-import ProfileListItem from "../ProfileListItem/ProfileListItem";
-import EntryBanner from "../EntryBanner/EntryBanner";
 
 class App extends React.Component {
   constructor() {

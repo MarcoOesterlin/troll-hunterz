@@ -139,12 +139,12 @@ class App extends React.Component {
         </Header>
         <Main>
           <Card
-            title="Top 5 Most Toxic"
+            title="Top 10 Most Toxic"
             className="toxic"
             entries={toxicEntries}
           />
           <Card
-            title="Top 5 Most Friendly"
+            title="Top 10 Most Polite"
             className="friendly"
             entries={politeEntries}
           />

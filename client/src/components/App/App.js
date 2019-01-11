@@ -144,7 +144,7 @@ class App extends React.Component {
             entries={toxicEntries}
           />
           <Card
-            title="Top 5 Most Polite"
+            title="Top 5 Most Friendly"
             className="friendly"
             entries={politeEntries}
           />

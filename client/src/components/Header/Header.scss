@@ -8,10 +8,10 @@ header {
   box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
   transition: $transition-speed;
   position: fixed;
-  
+
   &.large {
     height: 270px;
-    
+
     h1 {
       position: relative;
       color: black;
@@ -37,21 +37,21 @@ header {
       right: 100px;
     }
 
-    .entryBannerShow{
+    .entryBannerShow {
       color: #fdd947;
       top: 223px;
       font-size: 0.7rem;
       box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
       position: relative;
+    }
+    .entryBannerHide {
+      display: none;
+    }
   }
-     .entryBannerHide {
-    display: none;
-   }
-  }
-  
+
   &.small {
     height: 60px;
-    
+
     h1 {
       position: relative;
       color: black;
@@ -68,10 +68,7 @@ header {
         right: 0;
         margin: auto;
       }
-
     }
-
-
 
     .text-field {
       transition: $transition-speed;
@@ -86,13 +83,13 @@ header {
   @media screen and (max-width: 768px) {
     &.large {
       height: 250px;
-      
+
       h1 {
         position: relative;
         color: black;
         font-size: 1.3rem;
         margin: 0;
-  
+
         img {
           transition: $transition-speed;
           position: absolute;
@@ -103,7 +100,7 @@ header {
           max-width: 400px;
         }
       }
-  
+
       .text-field {
         transition: $transition-speed;
         position: absolute;
@@ -112,16 +109,16 @@ header {
         right: 20px;
       }
     }
-    
+
     &.small {
       height: 60px;
-      
+
       h1 {
         position: relative;
         color: black;
         font-size: 1.3rem;
         margin: 0;
-  
+
         img {
           transition: $transition-speed;
           position: absolute;
@@ -132,7 +129,7 @@ header {
           margin: auto;
         }
       }
-  
+
       .text-field {
         transition: $transition-speed;
         position: absolute;
@@ -144,6 +141,3 @@ header {
     }
   }
 }
-
-
-

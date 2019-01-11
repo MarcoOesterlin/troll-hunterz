@@ -20,7 +20,8 @@ class App extends React.Component {
       userEntry: {
         username: "",
         score: "",
-        imgUrl: ""
+        imgUrl: "",
+        showTutorial: false
       }
     };
   }
@@ -91,7 +92,8 @@ class App extends React.Component {
             bannerShow: true,
             userEntry: {
               username:
-                "Failed to post entry, try to use a different search term"
+                "Failed to post entry, try to use a different search term",
+              showTutorial: true
             }
           });
         });

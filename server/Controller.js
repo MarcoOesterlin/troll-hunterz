@@ -98,6 +98,7 @@ export default class Controller {
   async youtubeEntry(req, res) {
     const service = google.youtube("v3");
     const { username } = req.body;
+    console.log(`${username}: Analyzing...`);
 
     const usernameToChannelId = async username => {
       const parameters = {
@@ -111,7 +112,19 @@ export default class Controller {
         const channelId = googleResponse.data.items[0].id;
         return channelId;
       } catch (e) {
-        return null;
+        try {
+          const parameters = {
+            maxResults: "25",
+            part: "snippet",
+            auth: youtubeAPIKey,
+            channelId: username
+          };
+          const googleResponse = await service.channels.list(parameters);
+          const channelId = googleResponse.data.items[0].id;
+          return channelId;
+        } catch (e) {
+          return null;
+        }
       }
     };
 
@@ -157,16 +170,20 @@ export default class Controller {
     };
 
     const summarizeVideoComments = async videoComments => {
-      const commentScores = await Promise.all(
-        videoComments.map(async videoComment => {
-          const sentimentResponse = await axios.get(
-            `${sentimentURI}/analyze?value=${encodeURI(videoComment)}`
-          );
-          return sentimentResponse.data.comparative;
-        })
-      );
-      const sumScores = commentScores.reduce((a, b) => a + b, 0);
-      return sumScores;
+      try {
+        const commentScores = await Promise.all(
+          videoComments.map(async videoComment => {
+            const sentimentResponse = await axios.get(
+              `${sentimentURI}/analyze?value=${encodeURI(videoComment)}`
+            );
+            return sentimentResponse.data.comparative;
+          })
+        );
+        const sumScores = commentScores.reduce((a, b) => a + b, 0);
+        return sumScores;
+      } catch (e) {
+        return null;
+      }
     };
 
     const getImageUrl = async username => {
@@ -180,34 +197,88 @@ export default class Controller {
         const googleResponse = await service.channels.list(parameters);
         const imageUrl =
           googleResponse.data.items[0].snippet.thumbnails.default.url;
-        console.log(imageUrl);
         return imageUrl;
       } catch (e) {
-        console.log("Image not found");
         return null;
       }
     };
 
+    const getNumEmptyArrays = array2d => {
+      let numEmptyArrays = 0;
+      videosComments.forEach(videosComments => {
+        if (videosComments.length <= 0) {
+          numEmptyArrays++;
+        }
+      });
+      return numEmptyArrays;
+    };
+
     const channelId = await usernameToChannelId(username);
     if (!channelId) {
-      res.status(400).send("Channel not found.");
+      console.log(`${username}: Channel not found.`);
+      res.status(400).send(`${username}: Channel not found.`);
       return;
     }
-    const videoIds = await channelIdToVideoIds(channelId, 10);
+
+    const videoIds = await channelIdToVideoIds(channelId, 50);
+    console.log(`${username}: ${videoIds.length} videos found.`);
+
     const videosComments = await Promise.all(
       videoIds.map(videoId => retrieveComments(videoId, 100))
     );
+    const numDisabledCommentSections = getNumEmptyArrays(videosComments);
+    console.log(
+      `${username}: ${numDisabledCommentSections} of disabled comment sections of ${
+        videosComments.length
+      }.`
+    );
+
     const videoSentimentScores = await Promise.all(
       videosComments.map(videoComments => summarizeVideoComments(videoComments))
     );
+    if (videoSentimentScores) {
+      console.log(`${username}: Successfully executed sentiment analysis.`);
+    } else {
+      console.log(`${username}: Failed to execute sentiment analysis`);
+    }
     const channelSentimentSum = videoSentimentScores.reduce((a, b) => a + b, 0);
+    console.log(`${username}: ${channelSentimentSum} sentiment score.`);
 
     const imgUrl = await getImageUrl(username);
+    if (imgUrl) {
+      console.log(`${username}: Found image.`);
+    } else {
+      console.log(`${username}: Image not found.`);
+    }
 
-    res.status(200).send({
-      score: channelSentimentSum,
-      username: username,
-      imgUrl: imgUrl
-    });
+    const timestamp = Date.now();
+    console.log(`${username}: Timestamp`);
+
+    const collection = this.mongoClient
+      .db("trollhunterz")
+      .collection("entries");
+    try {
+      console.log(`${username}: Pushing to db...`);
+      await collection.insertOne({
+        _id: {
+          username,
+          timestamp
+        },
+        score: channelSentimentSum,
+        imgUrl
+      });
+      console.log(`${username}: Successfully pushed to db.`);
+      res.status(200).send({
+        score: channelSentimentSum,
+        username: username,
+        imgUrl: imgUrl
+      });
+      console.log(`${username}: OK.`);
+      return;
+    } catch (e) {
+      console.log(`${username}: Failed.`);
+      res.status(500).send("Database failure.");
+      return;
+    }
   }
 }

@@ -11,7 +11,12 @@ class ProfileListItem extends React.Component {
     return (
       <div className="listItem">
         <Divider className="divider" />
-        <a href={userUrl} target="_blank" className="profile-image">
+        <a
+          href={userUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="profile-image"
+        >
           <img src={this.props.entry.imgUrl} alt="Profile" />
         </a>
         <h3 className="channel-title"> {this.props.entry.channelTitle} </h3>

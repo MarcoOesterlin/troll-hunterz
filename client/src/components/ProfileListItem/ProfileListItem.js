@@ -10,7 +10,7 @@ class ProfileListItem extends React.Component {
       <div className="ListItem">
         <Divider className="divider" />
         <a href={userUrl} target="_blank" className="profile-image">
-          <img src={this.props.entry.imageUrl} />
+          <img src={this.props.entry.imgUrl} />
         </a>
         <h3 className="username"> {this.props.entry.username} </h3>
         <h3 className="score"> {roundScore} </h3>

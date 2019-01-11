@@ -23,7 +23,7 @@ class App extends React.Component {
       userEntry: {
         username: "",
         score: "",
-        imageUrl: ""
+        imgUrl: ""
       }
     };
   }
@@ -77,20 +77,24 @@ class App extends React.Component {
           const entryResponse = res.data;
           this.fetchEntries();
           this.clearTextField();
-          console.log(entryResponse.value);
-          console.log(entryResponse.comparative);
 
           this.setState({
             bannerShow: true,
             userEntry: {
               username: entryResponse.username,
               score: entryResponse.score,
-              imageUrl: entryResponse.imageUrl
+              imgUrl: entryResponse.imgUrl
             }
           });
         })
         .catch(() => {
           console.log(`Failed to post entry`);
+          this.setState({
+            bannerShow: true,
+            userEntry: {
+              username: "Failed to post entry"
+            }
+          });
         });
     }
   };

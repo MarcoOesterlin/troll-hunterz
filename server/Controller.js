@@ -86,7 +86,7 @@ export default class Controller {
 
   async youtubeEntry(req, res) {
     const service = google.youtube('v3');
-    const { username } = req.body.value;
+    const { username } = req.body;
 
     const usernameToChannelId = async username => {
       const parameters = {
@@ -100,7 +100,19 @@ export default class Controller {
         const channelId = googleResponse.data.items[0].id;
         return channelId;
       } catch (e) {
-        return null;
+        try {
+          const parameters = {
+            'maxResults': '25',
+            'part': 'snippet',
+            'auth': youtubeAPIKey,
+            'channelId': username,
+          };
+          const googleResponse = await service.channels.list(parameters);
+          const channelId = googleResponse.data.items[0].id;
+          return channelId;
+        } catch (e) {
+          return null;
+        }
       }
     };
 
@@ -185,13 +197,29 @@ export default class Controller {
       videosComments.map(videoComments => summarizeVideoComments(videoComments),
     ));
     const channelSentimentSum = videoSentimentScores.reduce((a, b) => a + b, 0);
-
     const imgUrl = await getImageUrl(username);
     
-    res.status(200).send({
-      score: channelSentimentSum,
-      username: username,
-      imgUrl: imgUrl,
-    });
+    const timestamp = Date.now();
+    
+    const collection = mongoClient.db('trollhunterz').collection('entries');
+    try {
+      await collection.insertOne({
+        _id: {
+          username,
+          timestamp,
+        },
+        score: channelSentimentSum,
+        imgUrl,
+      });
+      res.status(200).send({
+        score: channelSentimentSum,
+        username: username,
+        imgUrl: imgUrl,
+      });
+      return;
+    } catch (e) {
+      res.status(500).send('Database failure.');
+      return;
+    }
   }
 }

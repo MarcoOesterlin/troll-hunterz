@@ -6,7 +6,7 @@ class Card extends React.Component {
   render() {
     const { entries } = this.props;
     const listItems = entries.map(entry => (
-      <ProfileListItem entry={entry} key={entry.username} />
+      <ProfileListItem entry={entry} key={entry.channelId} />
     ));
 
     return (

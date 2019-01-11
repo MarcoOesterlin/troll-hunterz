@@ -11,11 +11,18 @@ class ProfileListItem extends React.Component {
     return (
       <div className="listItem">
         <Divider className="divider" />
-        <a href={userUrl} target="_blank" className="profile-image">
-          <img src={this.props.entry.imgUrl} alt="Profile" />
-        </a>
-        <h3 className="channel-title"> {this.props.entry.channelTitle} </h3>
-        <h3 className="score"> {roundScore} </h3>
+        <img src={this.props.entry.channelBanner}>
+          <a
+            href={userUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="profile-image"
+          >
+            <img src={this.props.entry.imgUrl} alt="Profile" />
+          </a>
+          <h3 className="channel-title"> {this.props.entry.channelTitle} </h3>
+          <h3 className="score"> {roundScore} </h3>
+        </img>
       </div>
     );
   }

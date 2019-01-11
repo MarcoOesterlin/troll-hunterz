@@ -18,7 +18,7 @@ class EntryBanner extends React.Component {
           {showTutorial ? (
             <TutorialComponent />
           ) : (
-            <a href={channelUrl} target="_blank">
+            <a href={channelUrl} target="_blank" rel="noopener noreferrer">
               Your Latest Entry: {this.props.userEntry.channelTitle} : Score{" "}
               {roundScore}
             </a>

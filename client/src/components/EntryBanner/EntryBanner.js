@@ -18,7 +18,8 @@ class EntryBanner extends React.Component {
             <TutorialComponent />
           ) : (
             <a href={userUrl} target="_blank">
-              Your Latest Entry: {this.props.userEntry.username} :{roundScore}
+              Your Latest Entry: {this.props.userEntry.username} : Score{" "}
+              {roundScore}
             </a>
           )}
         </h2>

@@ -46,6 +46,9 @@ header {
       a:visited {
         color: #fdd947;
       }
+      a:link {
+        color: #fdd947;
+      }
     }
     .entryBannerHide {
       display: none;
@@ -58,6 +61,14 @@ header {
   }
 
   &.small {
+    .entryBannerHide {
+      display: none;
+
+      .Tutorial-component {
+        display: none;
+        color: green;
+      }
+    }
     height: 60px;
 
     h1 {

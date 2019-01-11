@@ -39,11 +39,11 @@ class App extends React.Component {
   handleScroll = e => {
     if (window.scrollY > 150) {
       if (this.state.headerSize !== "small") {
-        this.setState({ headerSize: "small" });
+        this.setState({ headerSize: "small", bannerShow: false });
       }
     } else {
       if (this.state.headerSize !== "large") {
-        this.setState({ headerSize: "large" });
+        this.setState({ headerSize: "large", bannerShow: true });
       }
     }
   };

@@ -80,8 +80,8 @@ export default class Controller {
       const sortedByScore = sortByScore(uniqueByUsername);
       res.status(200).send({
         entries: {
-        toxic: sortedByScore.slice(0, 3),
-        polite: sortedByScore.slice(sortedByScore.length - 3, sortedByScore.length).reverse(),
+        toxic: sortedByScore.slice(0, 10),
+        polite: sortedByScore.slice(sortedByScore.length - 10, sortedByScore.length).reverse(),
       }});
     });
   }

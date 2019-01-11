@@ -1,5 +1,6 @@
 import React from "react";
 import TutorialComponent from "../TutorialComponent/TutorialComponent";
+import "./EntryBanner.scss";
 
 class EntryBanner extends React.Component {
   render() {

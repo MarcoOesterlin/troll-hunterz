@@ -1,0 +1,20 @@
+.entryBannerShow {
+  color: #fdd947;
+  top: 223px;
+  font-size: 0.7rem;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  a:visited {
+    color: #fdd947;
+  }
+  a:link {
+    color: #fdd947;
+  }
+}
+.entryBannerHide {
+  display: none;
+  .Tutorial-component {
+    display: none;
+    color: green;
+  }
+}

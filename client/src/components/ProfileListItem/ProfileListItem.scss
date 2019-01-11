@@ -1,4 +1,4 @@
-.ListItem {
+.listItem {
   display: grid;
   grid-template-areas:
     "divider divider divider"
@@ -19,12 +19,12 @@
       border-radius: 300px;
     }
   }
-  .username,
+  .channel-title,
   .score {
     padding-top: 11px;
   }
-  .username {
-    grid-area: username;
+  .channel-title {
+    grid-area: channel-title;
   }
 
   .score {

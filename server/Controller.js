@@ -72,7 +72,11 @@ export default class Controller {
           comparative,
           score,
         });
-        res.sendStatus(200);
+        res.status(200).send({
+          value,
+          comparative,
+          score,
+        });
         return;
       } catch (e) {
         res.status(500).send('Database failure.');

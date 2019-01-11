@@ -272,6 +272,22 @@ export default class Controller {
         return null;
       }
     }
+
+    const getBannerUrl = async channelId => {
+      const parameters = {
+        maxResults: "25",
+        part: "brandingSettings",
+        auth: youtubeAPIKey,
+        id: channelId
+      };
+      try {
+        const googleResponse = await service.channels.list(parameters);
+        const bannerUrl = googleResponse.data.items[0].brandingSettings.image.bannerImageUrl;
+        return bannerUrl;
+      } catch (e) {
+        return null;
+      }
+    }
     
     const channelId = await valueToChannelId(value);
     if (!channelId) {
@@ -280,6 +296,11 @@ export default class Controller {
       return;
     } else {
       console.log(`${value}: Channel id: ${channelId}`);
+    }
+    
+    const bannerUrl = await getBannerUrl(channelId);
+    if (bannerUrl) {
+      console.log(`${value}: BannerUrl found. ${bannerUrl}`);
     }
 
     const channelTitle = await getChannelTitle(channelId);
@@ -332,6 +353,7 @@ export default class Controller {
         score: channelSentimentSum,
         imgUrl,
         channelTitle,
+        bannerUrl,
       });
       console.log(`${value}: Successfully pushed to db.`);
       res.status(200).send({
@@ -339,6 +361,7 @@ export default class Controller {
         channelId,
         imgUrl,
         channelTitle,
+        bannerUrl,
       });
       console.log(`${value}: OK.`);
       return;

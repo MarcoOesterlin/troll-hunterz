@@ -18,6 +18,7 @@ class Header extends React.Component {
         <label htmlFor="textfield">
           <h1>
             <img
+              className="cursor-pointer"
               src={TrollLogo}
               alt="Troll Hunterz Logo"
               onClick={() => scrollToTop()}

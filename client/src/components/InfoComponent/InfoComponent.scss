@@ -1,0 +1,18 @@
+.info-component {
+  background-color: #21201f;
+  box-shadow: 0 5px 45px rgba(0, 0, 0, 0.7);
+  border-radius: 5px;
+  color: #fdd947;
+
+  margin-left: 65px;
+  margin-right: 65px;
+  margin-bottom: 50px;
+  padding: 40px 70px;
+}
+
+h2 {
+  text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+}

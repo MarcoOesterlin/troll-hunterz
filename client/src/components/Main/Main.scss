@@ -3,19 +3,39 @@ main {
   margin-right: auto;
   margin-top: 260px;
   margin-bottom: 50px;
-  padding: 40px 70px;
+  padding: 40px 60px;
   background-color: #727271;
   display: grid;
   grid-template-areas: "toxic friendly";
   grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
   grid-gap: 20px;
 
-
-  .toxic{
+  .toxic {
     grid-area: toxic;
   }
 
-  .friendly{
-      grid-area: friendly;
+  .friendly {
+    grid-area: friendly;
   }
+}
+
+@media screen and (max-width: 800px) {
+  main {
+    grid-template-areas:
+      "toxic"
+      "friendly";
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  main {
+    padding: 40px 0px;
+  }
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }

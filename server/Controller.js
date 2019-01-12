@@ -11,38 +11,11 @@ export default class Controller {
       console.log('Connected to MongoDB cloud.');
     });
     this.getAllEntries = this.getAllEntries.bind(this);
-    this.insertEntry = this.insertEntry.bind(this);
     this.youtubeEntry = this.youtubeEntry.bind(this);
+    this.updateDb = this.updateDb.bind(this);
   }
 
   getAllEntries(_req, res) {
-    // res.status(200).send({
-    //   entries: {
-    //     toxic: [
-    //       {
-    //         imgUrl:
-    //           "https://yt3.ggpht.com/a-/AAuE7mAcW198VrHrQqGTGs5EEXx7-Tv-qtFpWky1og=s88-mo-c-c0xffffffff-rj-k-no",
-    //         score: -7.182177975501057,
-    //         username: "newdramaalert"
-    //       },
-    //       {
-    //         imgUrl:
-    //           "https://yt3.ggpht.com/a-/AAuE7mD7iJevCngNeCAIs0-3F6Dn_L4LtFnVOcpp9w=s88-mo-c-c0xffffffff-rj-k-no",
-    //         score: 43.38968802213832,
-    //         username: "h3h3productions"
-    //       }
-    //     ],
-    //     polite: [
-    //       {
-    //         imgUrl:
-    //           "https://yt3.ggpht.com/a-/AAuE7mDZhAzA6_0IvivO8I50ZE8Wdw3XQY4v2V-nDA=s88-mo-c-c0xffffffff-rj-k-no",
-    //         score: 69.38185887861775,
-    //         username: "destinws2"
-    //       }
-    //     ]
-    //   }
-    // });
-    
     const getLatestByChannelId = arraySortedByTimestamp => {
       const channelIdMap = {};
       arraySortedByTimestamp.forEach(entry => {
@@ -53,7 +26,7 @@ export default class Controller {
     }
 
     const sortByScore = entryArray => {
-      const compare = (a,b) => {
+      const compare = (a, b) => {
         if (a.score < b.score)
           return -1;
         if (a.score > b.score)
@@ -63,7 +36,7 @@ export default class Controller {
       const sortedEntryArray = entryArray.sort(compare)
       return sortedEntryArray;
     }
-    
+
     const { mongoClient } = this;
     const collection = mongoClient.db('trollhunterz').collection('entries');
     collection.find({}).sort({ "_id.timestamp": 1 }).toArray((err, mongoDbResponse) => {
@@ -77,57 +50,43 @@ export default class Controller {
         return { score, imgUrl, channelId, timestamp, channelTitle, bannerUrl };
       });
       const uniqueByChannelId = getLatestByChannelId(sortedEntries);
-      console.log(uniqueByChannelId);
       const sortedByScore = sortByScore(uniqueByChannelId);
       res.status(200).send({
         entries: {
-        toxic: sortedByScore.slice(0, 10),
-        polite: sortedByScore.slice(sortedByScore.length - 10, sortedByScore.length).reverse(),
-      }});
+          toxic: sortedByScore.slice(0, 10),
+          polite: sortedByScore.slice(sortedByScore.length - 10, sortedByScore.length).reverse(),
+        }
+      });
     });
   }
 
-  async insertEntry(req, res) {
-    const { mongoClient } = this;
-    const collection = mongoClient.db("trollhunterz").collection("entries");
-    const { value } = req.body;
-    if (!value) {
-      res.status(400).send("Empty body");
-      return;
-    }
-
-    try {
-      const analyzeResponse = await axios.get(
-        `${sentimentURI}/analyze?value=${value}`
-      );
-      const { comparative, score } = analyzeResponse.data;
-      try {
-        collection.insertOne({
-          _id: {
-            value
-          },
-          comparative,
-          score
+  updateDb(_req, res) {
+    axios.get('http://localhost:3001/entries')
+      .then(res => {
+        const { data } = res;
+        const entries = data.entries.toxic
+          .concat(data.entries.polite);
+        const channelIds = entries.map(entry => entry.channelId);
+        channelIds.forEach(cid => {
+          axios.post(
+            'http://localhost:3001/entry',
+            { value: cid },
+          )
         });
-        res.status(200).send({
-          value,
-          comparative,
-          score
-        });
-        return;
-      } catch (e) {
-        res.status(500).send("Database failure.");
-        return;
-      }
-    } catch (err) {
-      res.status(500).send(`Failed to analyze.${process.env.SENTIMENT_URI}`);
-      return;
-    }
+        res.status(201).send('Update successful');
+      })
+      .catch(() => {
+        res.status(500).send('Update failure');
+      });
   }
 
   async youtubeEntry(req, res) {
     const service = google.youtube("v3");
     const { value } = req.body;
+    if (!value) {
+      res.status(400).send('Bad request');
+    }
+    
     console.log(`${value}: Analyzing...`);
 
     const valueToChannelId = async username => {
@@ -141,7 +100,7 @@ export default class Controller {
         const regex = new RegExp(urlRegex);
         return s.match(regex);
       }
-      
+
       const inputParam = isYoutubeUrl(username)
         ? splitLast(username, '/')
         : username;
@@ -213,23 +172,6 @@ export default class Controller {
       }
     };
 
-    const summarizeVideoComments = async videoComments => {
-      try {
-        const commentScores = await Promise.all(
-          videoComments.map(async videoComment => {
-            const sentimentResponse = await axios.get(
-              `${sentimentURI}/analyze?value=${encodeURI(videoComment)}`
-            );
-            return sentimentResponse.data.comparative;
-          })
-        );
-        const sumScores = commentScores.reduce((a, b) => a + b, 0);
-        return sumScores;
-      } catch (e) {
-        return null;
-      }
-    };
-
     const getImageUrl = async channelId => {
       const parameters = {
         maxResults: "25",
@@ -288,7 +230,25 @@ export default class Controller {
         return null;
       }
     }
-    
+
+    const sentimentAnalysis = async stringArray => {
+      try {
+        const sentimentResponse = await axios.post(
+          `${sentimentURI}/analyze`,
+          { stringArray },
+          {
+            maxBodyLength: Infinity,
+          },
+        );
+        const { comparative } = sentimentResponse.data;
+        return comparative;
+      } catch (e) {
+        console.log(`Failed to analyze.`);
+        console.log(Object.keys(e.request));
+        return null;
+      }
+    };
+
     const channelId = await valueToChannelId(value);
     if (!channelId) {
       console.log(`${value}: Channel not found.`);
@@ -297,10 +257,10 @@ export default class Controller {
     } else {
       console.log(`${value}: Channel id: ${channelId}`);
     }
-    
+
     const bannerUrl = await getBannerUrl(channelId);
     if (bannerUrl) {
-      console.log(`${value}: BannerUrl found. ${bannerUrl}`);
+      console.log(`${value}: BannerUrl found.`);
     }
 
     const channelTitle = await getChannelTitle(channelId);
@@ -315,19 +275,15 @@ export default class Controller {
     const numDisabledCommentSections = getNumEmptyArrays(videosComments);
     console.log(
       `${value}: ${numDisabledCommentSections} of disabled comment sections of ${
-        videosComments.length
+      videosComments.length
       }.`
     );
-
-    const videoSentimentScores = await Promise.all(
-      videosComments.map(videoComments => summarizeVideoComments(videoComments))
-    );
-    if (videoSentimentScores) {
-      console.log(`${value}: Successfully executed sentiment analysis.`);
-    } else {
-      console.log(`${value}: Failed to execute sentiment analysis`);
+    
+    const channelSentimentSum = await sentimentAnalysis(videosComments.flat());
+    if (!channelSentimentSum) {
+      res.status(500).send('Sentiment server failure');
+      return;
     }
-    const channelSentimentSum = videoSentimentScores.reduce((a, b) => a + b, 0) / videosComments.length;
     console.log(`${value}: ${channelSentimentSum} sentiment score.`);
 
     const imgUrl = await getImageUrl(channelId);
@@ -338,8 +294,8 @@ export default class Controller {
     }
 
     const timestamp = Date.now();
-    console.log(`${value}: Timestamp ${ timestamp }`);
-    
+    console.log(`${value}: Timestamp ${timestamp}`);
+
     const collection = this.mongoClient
       .db("trollhunterz")
       .collection("entries");
@@ -356,18 +312,18 @@ export default class Controller {
         bannerUrl,
       });
       console.log(`${value}: Successfully pushed to db.`);
-      res.status(200).send({
-        score: channelSentimentSum,
-        channelId,
-        imgUrl,
-        channelTitle,
+      res.status(201).send({
         bannerUrl,
+        channelId,
+        channelTitle,
+        imgUrl,
+        score: channelSentimentSum,
       });
       console.log(`${value}: OK.`);
       return;
     } catch (e) {
       console.log(`${value}: Failed.`);
-      res.status(500).send("Database failure.");
+      res.status(500).send('Database failure.');
       return;
     }
   }

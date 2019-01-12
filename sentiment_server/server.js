@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { json } from 'body-parser';
+import { json, urlencoded } from 'body-parser';
 import Sentiment from 'sentiment';
 
 const app = express();
@@ -8,15 +8,25 @@ const port = 3002;
 const sentiment = new Sentiment();
 
 app.use(cors());
-app.use(json());
+app.use(json({ limit: '10mb', extended: true }));
+app.use(urlencoded({ limit: '10mb', extended: true }));
+app.post('/analyze', (req, res) => {
+  try {
+    const { stringArray } = req.body;
+    const comparativeArray = stringArray.map(s => sentiment.analyze(s).comparative);
+    const numElements = stringArray.length;
+    const comparative = comparativeArray.reduce((acc, val) => acc + val, 0) / numElements * 100;
+    res.status(200).send({ comparative });
+    return;
+  } catch (e) {
+    console.log('Failed to analyze');
+    res.status(500).send();
+    return;
+  }
+});
 app.get('/analyze', (req, res) => {
-  const { value } = req.query;
-  const { comparative, score } = sentiment.analyze(value);
-  res.status(200).send({
-    comparative,
-    score,
-  });
-  return;
+  console.log(req.query);
+  res.sendStatus(200);
 });
 app.listen(port, () => {
   console.log(`Sentiment server listening to port ${ port }.`);

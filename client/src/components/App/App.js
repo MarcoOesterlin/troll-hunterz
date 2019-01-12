@@ -18,14 +18,14 @@ class App extends React.Component {
       toxicEntries: [],
       textFieldValue: "",
       headerSize: "large",
-      bannerShow: false,
+      bannerShow: true,
       userEntry: {
         username: "",
         score: "",
         imgUrl: "",
         channelId: "",
         channelTitle: "",
-        showTutorial: false
+        showTutorial: true
       },
       isFetching: false
     };

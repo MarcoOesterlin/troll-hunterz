@@ -1,6 +1,5 @@
 import React from "react";
 import "./ProfileListItem.scss";
-import Divider from "../Divider/Divider";
 
 class ProfileListItem extends React.Component {
   render() {
@@ -22,7 +21,11 @@ class ProfileListItem extends React.Component {
           <h3 className="channel-title"> {this.props.entry.channelTitle} </h3>
           <h3 className="score"> {roundScore} </h3>
         </div>
-        <img className="banner" src={this.props.entry.bannerUrl} />
+        <img
+          className="banner"
+          src={this.props.entry.bannerUrl}
+          alt="Channel banner"
+        />
       </div>
     );
   }

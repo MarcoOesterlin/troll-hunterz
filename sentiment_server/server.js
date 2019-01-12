@@ -20,7 +20,7 @@ app.post('/analyze', (req, res) => {
     return;
   } catch (e) {
     console.log('Failed to analyze');
-    res.status(500).send();
+    res.status(500).send('Failed to analyze');
     return;
   }
 });

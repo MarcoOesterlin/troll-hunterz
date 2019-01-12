@@ -278,8 +278,11 @@ export default class Controller {
       videosComments.length
       }.`
     );
+
+    const comments = videosComments.reduce((acc, val) => acc.concat(val), []);
+    console.log(`${value}: Number of comments: ${ comments.length }`);
     
-    const channelSentimentSum = await sentimentAnalysis(videosComments.flat());
+    const channelSentimentSum = await sentimentAnalysis(comments);
     if (!channelSentimentSum) {
       res.status(500).send('Sentiment server failure');
       return;

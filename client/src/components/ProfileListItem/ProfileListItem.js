@@ -18,7 +18,16 @@ class ProfileListItem extends React.Component {
           >
             <img src={this.props.entry.imgUrl} alt="Profile" />
           </a>
-          <h3 className="channel-title"> {this.props.entry.channelTitle} </h3>
+          <a
+            href={userUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="no-anchor-style"
+          >
+            <h3 className="channel-title"> 
+              {this.props.entry.channelTitle}
+            </h3>
+          </a>
           <h3 className="score"> {roundScore} </h3>
         </div>
         <img

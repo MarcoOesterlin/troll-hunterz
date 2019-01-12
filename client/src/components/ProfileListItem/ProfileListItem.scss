@@ -44,4 +44,14 @@
     background-repeat: no-repeat;
     background-size: cover;
   }
+
+  .no-anchor-style:link {
+    text-decoration: inherit;
+    color: inherit;
+  }
+
+  .no-anchor-style:visited {
+    text-decoration: inherit;
+    color: inherit;
+  }
 }

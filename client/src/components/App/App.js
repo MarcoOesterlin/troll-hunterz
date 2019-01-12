@@ -7,6 +7,8 @@ import { api } from "../../config";
 import TextField from "../TextField/TextField";
 import Footer from "../Footer/Footer";
 import Card from "../Card/Card";
+import InfoComponentIcon from "../InfoComponentIcon/InfoComponentIcon";
+import InfoComponent from "../InfoComponent/InfoComponent";
 
 class App extends React.Component {
   constructor() {
@@ -130,6 +132,7 @@ class App extends React.Component {
           bannerShow={this.state.bannerShow}
           userEntry={this.state.userEntry}
         >
+          <InfoComponentIcon />
           <TextField
             onSubmit={onSubmitHandler}
             onChange={onChangeHandler}
@@ -149,6 +152,7 @@ class App extends React.Component {
             entries={politeEntries}
           />
         </Main>
+        <InfoComponent />
         <Footer />
       </div>
     );

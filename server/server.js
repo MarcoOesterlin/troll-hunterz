@@ -17,9 +17,11 @@ app.use(json({ limit: '10mb', extended: true }));
 app.use(urlencoded({ limit: '10mb', extended: true }));
 
 // Routes 
-app.get('/entries', getAllEntries);
-app.post('/entry', youtubeEntry);
-app.post('/updatedb', updateDb);
+const router = express.Router();
+router.get('/entries', getAllEntries);
+router.post('/entry', youtubeEntry);
+router.post('/updatedb', updateDb);
+app.use('/api/v1', router);
 
 // Init server
 app.listen(port, () => {

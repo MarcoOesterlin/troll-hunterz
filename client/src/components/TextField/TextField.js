@@ -2,6 +2,9 @@ import React from "react";
 import "./TextField.scss";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
+/**
+ * Component allowing an user to enter input to the application.
+ */
 class TextField extends React.Component {
   render() {
     const { onSubmit, onChange, value, isFetching } = this.props;

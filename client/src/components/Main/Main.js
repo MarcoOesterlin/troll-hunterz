@@ -1,13 +1,11 @@
-import React from 'react';
-import './Main.scss';
-
+import React from "react";
+import "./Main.scss";
+/**
+ * Wrapper component for the main section of the application.
+ */
 class Main extends React.Component {
   render() {
-    return (
-      <main>
-        { this.props.children }
-      </main>
-    );
+    return <main>{this.props.children}</main>;
   }
 }
 

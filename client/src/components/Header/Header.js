@@ -2,7 +2,9 @@ import React from "react";
 import "./Header.scss";
 import TrollLogo from "./Troll.png";
 import EntryBanner from "../EntryBanner/EntryBanner";
-
+/**
+ * Component representing a header containging the logo, search field and the users latest search result.
+ */
 class Header extends React.Component {
   render() {
     const scrollToTop = () => {

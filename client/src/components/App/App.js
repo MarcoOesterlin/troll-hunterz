@@ -10,6 +10,11 @@ import Card from "../Card/Card";
 import InfoComponentIcon from "../InfoComponentIcon/InfoComponentIcon";
 import InfoComponent from "../InfoComponent/InfoComponent";
 
+/**
+ * Main component for the client, rendering all other components. Also handles the state of the application and user input. All logic maintaining the data
+ * shown on the website is located in this class.
+ */
+
 class App extends React.Component {
   constructor() {
     super();

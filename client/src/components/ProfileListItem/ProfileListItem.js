@@ -1,6 +1,10 @@
 import React from "react";
 import "./ProfileListItem.scss";
 
+/**
+ * Component representing each entry point provided from the database. Populating the top lists in the application.
+ */
+
 class ProfileListItem extends React.Component {
   render() {
     const userUrl = `https://www.youtube.com/channel/${
@@ -24,9 +28,7 @@ class ProfileListItem extends React.Component {
             rel="noopener noreferrer"
             className="no-anchor-style"
           >
-            <h3 className="channel-title"> 
-              {this.props.entry.channelTitle}
-            </h3>
+            <h3 className="channel-title">{this.props.entry.channelTitle}</h3>
           </a>
           <h3 className="score"> {roundScore} </h3>
         </div>

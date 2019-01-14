@@ -1,6 +1,8 @@
 import React from "react";
 import "./TutorialComponent.scss";
-
+/**
+ * Clickable component redirecting an user to the tutorial document.
+ */
 class TutorialComponent extends React.Component {
   render() {
     return (

@@ -314,8 +314,8 @@ export default class Controller {
     console.log(`${value}: Number of comments: ${comments.length}`);
 
     const channelSentimentSum = await sentimentAnalysis(comments);
-    if (!channelSentimentSum) {
-      res.status(500).send("Sentiment server failure");
+    if (channelSentimentSum === null || channelSentimentSum === undefined) {
+      res.status(500).send('Sentiment server failure');
       return;
     }
     console.log(`${value}: ${channelSentimentSum} sentiment score.`);

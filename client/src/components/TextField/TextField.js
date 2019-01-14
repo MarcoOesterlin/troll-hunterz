@@ -17,7 +17,7 @@ class TextField extends React.Component {
             id="textfield"
             onChange={onChange}
             value={value}
-            placeholder="Insert Youtube URL - https://www.youtube.com/channel/UCq-Fj5jknLsUf-MWSy4_brA"
+            placeholder="Insert Youtube URL Here"
           />
           {isFetching && <LinearProgress size={15} className="progress-bar" />}
         </form>

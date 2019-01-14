@@ -11,10 +11,14 @@ const app = express();
 const port = 3002;
 const sentiment = new Sentiment();
 
+// Middleware
 app.use(cors());
 app.use(json({ limit: "10mb", extended: true }));
 app.use(urlencoded({ limit: "10mb", extended: true }));
-app.post("/analyze", (req, res) => {
+
+// Routes
+const router = express.Router();
+router.post("/analyze", (req, res) => {
   try {
     const { stringArray } = req.body;
     const comparativeArray = stringArray.map(
@@ -31,10 +35,12 @@ app.post("/analyze", (req, res) => {
     return;
   }
 });
-app.get("/analyze", (req, res) => {
+router.get("/analyze", (req, res) => {
   console.log(req.query);
   res.sendStatus(200);
 });
+app.use("/api/v1", router);
+
 app.listen(port, () => {
   console.log(`Sentiment server listening to port ${port}.`);
 });

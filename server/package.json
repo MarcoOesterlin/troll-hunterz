@@ -17,7 +17,7 @@
   "scripts": {
     "start": "yarn && ./node_modules/.bin/nodemon",
     "now-start": "node .",
-    "deploy": "now && now -e SENTIMENT_URI='https://sentiment.now.sh' && yarn alias && yarn scale && echo Deploy complete.",
+    "deploy": "now && now -e SENTIMENT_URI='https://sentiment.now.sh/api/v1' && yarn alias && yarn scale && echo Deploy complete.",
     "scale": "now scale troll-hunterz.now.sh 1 1",
     "alias": "now alias"
   }

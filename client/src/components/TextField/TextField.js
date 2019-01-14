@@ -2,6 +2,9 @@ import React from "react";
 import "./TextField.scss";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
+/**
+ * Component allowing an user to enter input to the application.
+ */
 class TextField extends React.Component {
   render() {
     const { onSubmit, onChange, value, isFetching } = this.props;
@@ -14,7 +17,7 @@ class TextField extends React.Component {
             id="textfield"
             onChange={onChange}
             value={value}
-            placeholder="Insert Youtube URL - https://www.youtube.com/channel/UCq-Fj5jknLsUf-MWSy4_brA"
+            placeholder="Insert Youtube URL Here"
           />
           {isFetching && <LinearProgress size={15} className="progress-bar" />}
         </form>

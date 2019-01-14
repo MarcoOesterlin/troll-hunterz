@@ -1,6 +1,9 @@
 import React from "react";
 import "./InfoComponent.scss";
 
+/**
+ * Component holding information about the website.
+ */
 class InfoComponent extends React.Component {
   render() {
     return (

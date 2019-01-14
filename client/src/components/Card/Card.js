@@ -2,6 +2,10 @@ import React from "react";
 import "./Card.scss";
 import ProfileListItem from "../ProfileListItem/ProfileListItem";
 
+/**
+ * Component containing all the ProfileListItems.
+ */
+
 class Card extends React.Component {
   render() {
     const { entries } = this.props;
@@ -13,7 +17,6 @@ class Card extends React.Component {
       <div className="BaseCard">
         <h2>{this.props.title}</h2>
         {listItems}
-        {/* <DataTable entries={entries} /> */}
       </div>
     );
   }

@@ -2,6 +2,10 @@ import React from "react";
 import TutorialComponent from "../TutorialComponent/TutorialComponent";
 import "./EntryBanner.scss";
 
+/**
+ * Component containing the result from the users latest search. Also holds the TutorialComponent.
+ */
+
 class EntryBanner extends React.Component {
   render() {
     const showBanner = this.props.bannerShow;

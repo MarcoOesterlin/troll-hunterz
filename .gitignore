@@ -6,3 +6,4 @@ client/build
 server/mongodbConfig.js
 server/youtubeAPIKey.js
 server/yarn-error.log
+package-lock.json

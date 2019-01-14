@@ -105,9 +105,10 @@ export default class Controller {
   }
 
   /**
-   * Callback function executed when specified in an request to the express instance. Using the YouTube API it fetches information
-   * @param {*} req
-   * @param {*} res
+   * Callback function executed when specified in an request to the express instance. Using the YouTube API it fetches information about specified channel and sends a request to the Sentiment-API
+   * containing comments from the channel.
+   * @param {*YouTube Channel identifier} req
+   * @param {*Object containing BannerURL, Channel Title, Comparativ Score, Image URL, ChannelID of specified Channel} res
    */
   async youtubeEntry(req, res) {
     const service = google.youtube("v3");

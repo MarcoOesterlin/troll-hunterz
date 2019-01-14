@@ -10,7 +10,7 @@ class InfoComponent extends React.Component {
       <div className="info-component">
         <h3>About Troll-Hunterz</h3>
         <p>
-          You can search on a YouTube-channel and Troll-Hunterz will dislay a
+          You can search on a YouTube-channel and Troll-Hunterz will display a
           sentimental score based on comments in that channels top 10 most
           popular videos.
         </p>

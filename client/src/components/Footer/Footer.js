@@ -13,7 +13,7 @@ class Footer extends React.Component {
     return (
        <footer>
 
-           <a href="https://github.com/stefangeneralao/troll-hunterz" className="GithubLogo">
+           <a href="https://github.com" className="GithubLogo">
               <img src={GithubLogo} alt="Github Logo" />
            </a>
 

@@ -3,6 +3,8 @@ This project is a part of the course *Web Services* at *Malmö University*.
 
 The goal of the project is to map toxic communities at YouTube using sentiment analysis.
 
+Live demo: http://troll-hunterz.netlify.com
+
 ## Install prerequisites
 * Install Node from https://nodejs.org/en/
 * Install Yarn from https://yarnpkg.com/en/docs/install
